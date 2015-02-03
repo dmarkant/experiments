@@ -1,0 +1,390 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+
+body {
+    background:#555555;
+    font-family: "Roboto Slab";
+    color: white;
+}
+
+h1 {
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    color:#3399FF;
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    margin-top: 2px;
+    color: white;
+}
+
+p {
+    font-size: 1.4em;
+    margin-top: 15px;
+}
+
+strong {
+    color: white;
+    background-color: #3399FF;
+    font-weight: normal;
+}
+
+strong.q1 {
+    background-color: #3399FF;
+}
+
+strong.q2 {
+    background-color: #00C624;
+}
+
+#newgame {
+    color: white;
+    font-family: "Roboto Slab";    
+    background-color: #3399FF;
+}
+
+#main {
+    display:block;
+    margin:0 auto;
+    margin-top: 50px;
+}
+
+.instruct {
+    width:700px;
+    padding:0px;
+}
+
+.img-container {
+    text-align: center;
+}
+
+.img-container img {
+    margin: 0 auto;
+}
+
+
+#main table {
+    font-size:
+    border-spacing:0px;
+}
+
+
+.prediction-test {
+    margin-top: 150px;
+    text-align: center;
+}
+
+.prediction-test #instruction {
+    margin: 0 auto;
+    width: 370px;
+    font-size: 1.5em;
+}
+
+
+
+#leftpanel {
+    width:300px;
+    height:400px;
+    visibility:hidden;
+    margin-right:-100px;
+}
+
+#thestage {
+    cursor:auto;
+    margin:0 auto;
+}
+
+#rightpanel {
+    width:300px;
+    height:400px;
+    visibility:hidden;
+    font-family:Arial;   
+}
+
+/*
+ * Spacing for score breakdown
+ *
+ */
+
+#rightpanel p#line1 {
+    position:absolute;
+    color:black;
+    font-size:1.8em;
+    padding-top:35px;
+    text-align:left;
+}
+
+#rightpanel p#line1 span#nsamples {
+    position:absolute;
+    padding-left:40px;
+}
+
+#rightpanel p#line1 span#costobs {
+    position:absolute;
+    padding-left:120px;
+}
+
+#rightpanel p#line1 span#sum1 {
+    position:absolute;
+    padding-left:210px;
+}
+
+#rightpanel p#line2 {
+    position:absolute;
+    color:black;
+    font-size:1.8em;
+    padding-top:102px;
+    text-align:left;
+}
+#rightpanel p#line2 span#nerrors {
+    position:absolute;
+    padding-left:40px;    
+}
+
+#rightpanel p#line2 span#costmiss {
+    position:absolute;
+    padding-left:120px;
+}
+
+#rightpanel p#line2 span#sum2 {
+    position:absolute;
+    padding-left:210px;
+}
+
+#rightpanel p#breakdown {
+    position:absolute;
+    padding-top:230px;
+    padding-left:50px;
+    font-size:1.4em;
+}
+
+#rightpanel p#bonus {
+    position:absolute;
+    padding-top:245px;
+    padding-left:100px;
+    font-weight:bold;
+    font-size:2.5em;
+    color:red;
+}
+
+
+.hspacedescription {
+    color:white;
+    font-size:1.2em;
+    font-family:Arial;
+}
+
+.hspacedescription h1 {
+    color:#3399FF;
+    font-size:1.2em;
+    margin-bottom:0px;
+}
+
+.hspacedescription p {
+    margin-top:0px;
+}
+
+.hspacedescription h2 {
+    margin-top:2px;
+}
+
+
+input {
+    color:black;
+    font-size:12pt;
+    font-family:Arial;
+    font-weight:bold;
+    margin:0 auto;
+    width:200px;
+    height:30px;
+    display:block;
+}
+
+/*
+.begin {
+    font-size:1em;
+    font-family:Arial;
+    font-weight:bold;
+    margin:0 auto;
+    width:200px;
+    height:30px;
+    display:block;
+}
+*/
+
+#score {
+    margin: 0 auto;
+    width: 400px;
+    font-weight:bold;
+    font-size:1.8em;
+    font-family:Myriad Pro;
+    padding-top:10px;
+    border:1px solid gray;
+    visibility:hidden;
+}
+
+#scorenum {
+    color:Red;
+    font-size:2em;
+}
+
+#splash {
+    text-align:center;
+    margin:0 auto;
+    margin-top:200px;
+    font-family: 'Roboto Slab';
+    font-weight:bold;
+    font-size:4em;
+}
+
+#sofar {
+    font-size:.7em;
+    font-weight:normal;
+}
+
+
+
+#typicality {
+    width:950px;
+    margin:0 auto;
+    text-align:center;
+}
+
+#typicality #board {
+    margin:0 auto;
+}
+
+
+#typicality #boards td {
+    padding-right:8px;
+}
+
+#typicality input {
+    margin-top:20px;
+}
+
+
+div#training {
+    margin: 0 auto;
+    width: 1000px;
+    height: 500px;
+    font-family:Arial;
+}
+
+div#training p {
+    color:white;
+}
+
+div#training table {
+    height:400px;
+}
+
+div#training table canvas {
+    margin:0px;
+}
+
+table#trainingboards {
+    height:300px;
+    border-spacing:0px;
+}
+
+table#trainingboards td {
+    padding:10px;
+    margin:0px;
+}
+
+div#trainingboardheader {
+    height:120px;
+    color:white;
+    text-align:center;
+    font-size:0.8em;
+}
+
+div#hspacedescription h1 {
+    font-size:1.5em;
+}
+
+div#hspacedescription h2 {
+    font-size:1em;
+}
+
+div#hspacedescription strong {
+    color:orange;
+}
+
+
+div#questionnaire {
+    margin:0 auto;
+    padding:20px;
+}
+
+div#questionnaire h1 {
+    margin-bottom:0px;
+    padding:0px;
+    color:#3399FF;
+    /*border:1px solid green;*/
+}
+div#questionnaire h2 {
+    margin-top:0px;
+    padding:0px;
+    /*border:1px solid red;*/
+}
+div#questionnaire p {
+    font-family:Arial, sans-serif;
+}
+
+#postquiz {
+    margin-top:20px;
+}
+
+
+
+#debriefing {
+    margin:0 auto;
+    width:700px;
+    padding:50px;
+    color:white;
+    font-family:Myriad Pro;
+
+}
+
+#debriefing a {
+    color:black;
+}
+
+#debriefing table {
+    margin:0 auto;
+}
+
+#debriefing td {
+    width:200px;
+    height:100px;
+    border:2px solid gray;
+    font-size:1.1em;
+    color: white;
+    margin:20px;
+    padding:10px;
+    float:left;
+
+}
+
+select {
+    color: black;
+    font-size:18px;
+
+}
+
+#container-prompt {
+  padding: 20px;
+  text-align:center;
+}
+
+#thestage {
+  display: none;
+}
+
+textarea {
+  color: black;
+}

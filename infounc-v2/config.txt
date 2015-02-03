@@ -1,0 +1,35 @@
+[HIT Configuration]
+title = Target search (earn bonus for performance)!
+description = Play a game involving the search for hidden objects.
+amt_keywords = Perception, Psychology
+lifetime = 24
+us_only = true
+approve_requirement = 95
+contact_email_on_error = markant@mpib-berlin.mpg.de
+ad_group = Battleship
+psiturk_keywords = battleship
+organization_name = New York University
+browser_exclude_rule = MSIE, mobile, tablet
+
+[Database Parameters]
+database_url = mysql://lab:fishneversink@gureckislab.org:3306/mt_experiments
+table_name = battleship_infounc_v2
+
+[Server Parameters]
+host = 0.0.0.0
+port = 5011
+cutoff_time = 30
+logfile = server.log
+loglevel = 1
+debug = true
+login_username = lab
+login_pw = fishneversink
+threads = auto
+
+[Task Parameters]
+experiment_code_version = 4.0
+num_conds = 1
+num_counters = 1
+
+[Shell Parameters]
+launch_in_sandbox_mode = true

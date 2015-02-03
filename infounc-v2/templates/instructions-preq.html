@@ -1,0 +1,91 @@
+<div class="instruct" id="main">
+    <h1>Ship Surveillance</h1>
+    <h2>Instructions</h2>
+    <div id="container-instructions"></div>
+
+    <div id="questionnaire">
+
+        <div class="question">
+            <p class="questiontext">
+            How many shapes can appear on the board?
+            </p>
+            <select id="nshapes" name="nshapes">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Between 1 and 3</option>
+                <option value="1">Exactly 3</option>
+                <option value="2">Either 3 or 4, depending on interference</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            Which of the following does NOT cause your potential bonus to decrease?
+            </p>
+            <select id="penalties" name="penalties">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Uncovering a location in the grid</option>
+                <option value="1">Taking too long to fill in the rest of the shapes</option>
+                <option value="2">Making errors when filling in the shapes</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            In each game, no two shapes can have the same:
+            </p>
+            <select id="dimensions" name="dimensions">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Dimensions (width and height)</option>
+                <option value="1">Color</option>
+                <option value="2">Area</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            You will never see shapes in the same grid that are:
+            </p>
+            <select id="overlap" name="overlap">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Touching</option>
+                <option value="1">The same dimensions</option>
+                <option value="2">Overlapping</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            At the end of the experiment, your bonus will be partly determined by: 
+            </p>
+            <select id="bonus" name="bonus">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Adding up all of the bonuses you earned from every game</option>
+                <option value="1">Calculating the average bonus across all games you played</option>
+                <option value="2">Randomly selecting one game you played and adding that to the bonus</option>
+            </select>
+        </div>
+
+        
+        <div class="question">
+            <p class="questiontext">
+            Which of the following statements about "interference" is NOT correct?
+            </p>
+            <select id="interference" name="interference">
+                <option value="noresp" SELECTED></option>
+                <option value="0">It can occur whenever any two ships are touching</option>
+                <option value="1">It only affects locations that are adjacent to a different ship</option>
+                <option value="2">It can make a location appear empty (gray) even though a ship is there</option>                
+                <option value="3">It will ALWAYS cause the wrong color to appear</option>
+            </select>
+        </div>
+ 
+    </div>
+
+    <div id="container-prompt">
+        <div id="prompt"></div>
+        <a href="#" id=btn-continue class="btn btn-default btn-lg">Submit answers</a>        
+        <a href="#" id=btn-startover class="btn btn-default btn-lg">See instructions again</a>
+    </div>
+</div>
+
+
