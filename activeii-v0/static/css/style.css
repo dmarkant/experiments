@@ -6,9 +6,8 @@ body {
 	text-align: center;
 	font-family: Verdana, Helvetica, sans-serif;
 	margin: 0 auto;
-        margin-top: 0px;
-	width: 800px;
-        height: 1000px;
+    margin-top: 0px;
+	width: 1000px;
 }
 
 h1 {
@@ -92,6 +91,7 @@ strong {
 }
 
 #container-exp {
+  width: 1000px;
   margin: 0 auto;
   text-align: center;
 }
@@ -116,7 +116,8 @@ strong {
 }
 
 #stage svg {
-  border: 1px solid gray;
+  border-top: 1px solid gray;
+  margin-top: 20px;
 }
 
 
@@ -136,6 +137,7 @@ strong {
 
 .svg-container {
     margin: 0 auto;
+    margin-top: 20px;
 }
 
 #feedback-table {
@@ -180,3 +182,7 @@ span.test {
   text-transform: uppercase;
 }
 
+#aboveStage {
+  font-size: 2em;
+  margin-top: 30px;
+}

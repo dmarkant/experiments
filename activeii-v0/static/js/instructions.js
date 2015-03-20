@@ -82,10 +82,10 @@ var Instructions2 = function() {
                       'different directions.');
     }
 
-    self.add_text('After you have set the shape to a form that you want to learn about, press the ' +
+    self.add_text('After you have adjusted the shape to a form that you want to learn about, press the ' +
                   'spacebar to find out which category it belongs to. Give it a try for the example below:');
 
-    self.div.append(svg_element('urn-svg', 740, 400));
+    self.div.append(svg_element('urn-svg', 740, 600));
 	self.stage = d3.select('#urn-svg');
 	self.stage_h = Number(self.stage.attr("height"));
 	self.stage_w = Number(self.stage.attr("width"));
@@ -108,47 +108,36 @@ var Instructions3 = function() {
                   'keyboard based on which category you believe the shape belongs in.');
 
 
-    self.add_text('Your bonus at the end of the experiment will be based on how many items you classify correctly, with ' +
-                  '$.01 added for every correct classification. Thus, you should try to learn to classify items as quickly ' +
-                  'as possible so that as to maximize your earnings from <span class=test>test</span> turns.');
+    self.add_text('Your bonus at the end of the experiment will be based on how many shapes you classify correctly, with ' +
+                  '$.01 added for every correct classification. Thus, you should try to learn about the categories as quickly ' +
+                  'as possible so as to maximize your earnings from <span class=test>test</span> turns.');
 
     add_next_instruction_button(Instructions4);
 }
 
 
 var Instructions4 = function() {
-	var self = init_instruction(this, 3);
-
-
-
+	var self = init_instruction(this, 4);
+    add_next_instruction_button(InstructionsComplete);
 }
 
 
-
 var InstructionsComplete = function() {
-	output(['instructions', 'ready']);
-	var self = this;
-	pager.showPage('instruct.html');
-	self.div = $('#container-instructions');
+	var self = init_instruction(this, 'complete');
 
-	var t = 'Good job! Looks like you\'re ready to start playing. You will play a series of ' +
-			NROUNDS + ' games. After you\'ve finished, you will see the value of all of the urns ' +
-			'that you choose and your final bonus for the experiment.';
-	self.div.append(instruction_text_element(t));
+    self.add_text('Good job! Looks like you are ready to begin. You will now complete ' +
+                  N_BLOCKS + ' rounds, where each round begins with a series of <span class=learning>'+
+                  'learning</span> turns, which are then followed by a series of <span class=test>' +
+                  'test</span> turns. After you have finished all the rounds, you will see the bonus ' +
+                  'you earned from the <span class=test>test</span> turns.');
 
-	var t = 'Click below to start the first game. Good luck!';
-	self.div.append(instruction_text_element(t));
+    self.add_text('Please stay focused on the task. If you are idle for too long, the experiment will ' +
+                  'be aborted and you will forgo payment. Once you have started you will be unable to ' +
+                  'reload the page or view these instructions again.');
 
-	self.btn = d3.select('#container-instructions').append('input')
-								   .attr('value', 'Continue')
-			    				   .attr('type', 'button')
-								   .attr('height', 100)
-								   .style('margin-bottom', '30px');
+    self.add_text('Click below to get started. Good luck!');
 
-	self.btn.on('click', function() {
-        exp.training_completed = true;
-		exp.proceed();
-	});
+    add_next_instruction_button(exp.training);
 
 };
 

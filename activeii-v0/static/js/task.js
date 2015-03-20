@@ -1,34 +1,21 @@
-condition = 3;
+condition = 4;
 
-switch (condition) {
+RULE_COND = ['rb', 'ii'][Math.floor(condition/4)];
+STIM_COND = ['antenna', 'rectangle'][Math.floor(condition/2) % 2];
+SEL_COND =  ['both', 'single'][condition % 2];
 
-	case 0:
-		STIM_COND = 'antenna';
-		SEL_COND = 'both';
-		break;
-	case 1:
-		STIM_COND = 'antenna';
-		SEL_COND = 'single';
-		break;
-	case 2:
-		STIM_COND = 'rectangle';
-		SEL_COND = 'both';
-		break;
-	case 3:
-		STIM_COND = 'rectangle';
-		SEL_COND = 'single';
-		break;
-
-}
+RULE_COUNTER = counterbalance;
 
 var N_BLOCKS = 8,
-	N_TRIALS_TRAINING = 16,
-	TEST_BLOCK_TIME = 60000 * 5; // maximum test block duration (not implemented)
+	N_TRIALS_TRAINING = 4,
+	N_TRIALS_TEST = 4;
 
 var exp,
 	active_item = undefined,
 	yokeddata = [],
-	stimuli;
+	stimuli,
+	outpfx = [],
+	acc = [];
 
 // Initalize psiturk object
 var psiTurk = new PsiTurk(uniqueId, adServerLoc, mode);
@@ -54,8 +41,11 @@ DIMENSIONS = {'antenna': [{'name': 'radius',
 						     'min': 20,
 						     'max': 400}]};
 
+DIM_MAPPING = (Math.random() < .5) ? 0 : 1;
+
 // Generic function for saving data
 function output(arr) {
+	arr = outpfx.concat(arr);
     psiTurk.recordTrialData(arr);
     if (LOGGING) console.log(arr.join(" "));
 };
@@ -66,24 +56,56 @@ function clear_buttons() {
 };
 
 
-function cart2polar(x, y) {
-	radius = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-	angle = Math.atan(y/x);
-	return [radius, angle]
-}
-
-function polar2cart(radius, angle) {
-	x = radius * Math.cos(angle);
-	y = radius * Math.sin(angle);
-	return [x, y];
-}
-
-
 function cart2stim(x, y) {
-	a = DIMENSIONS[STIM_COND][0]['min'] + x * (DIMENSIONS[STIM_COND][0]['max'] - DIMENSIONS[STIM_COND][0]['min']);
-	b = DIMENSIONS[STIM_COND][1]['min'] + y * (DIMENSIONS[STIM_COND][1]['max'] - DIMENSIONS[STIM_COND][1]['min']);
+	if (DIM_MAPPING == 0) {
+		a = DIMENSIONS[STIM_COND][0]['min'] + x * (DIMENSIONS[STIM_COND][0]['max'] - DIMENSIONS[STIM_COND][0]['min']);
+		b = DIMENSIONS[STIM_COND][1]['min'] + y * (DIMENSIONS[STIM_COND][1]['max'] - DIMENSIONS[STIM_COND][1]['min']);
+	} else {
+		a = DIMENSIONS[STIM_COND][0]['min'] + y * (DIMENSIONS[STIM_COND][0]['max'] - DIMENSIONS[STIM_COND][0]['min']);
+		b = DIMENSIONS[STIM_COND][1]['min'] + x * (DIMENSIONS[STIM_COND][1]['max'] - DIMENSIONS[STIM_COND][1]['min']);
+	}
 	return [a, b];
 }
+
+
+function classify(coord) {
+	x = coord[0];
+	y = coord[1];
+	label = null;
+
+	if (RULE_COND == 'rb') {
+		if (RULE_COUNTER == 0) {
+			if (x < .5) label = 'A';
+			else label = 'B';
+		} else if (RULE_COUNTER == 1) {
+			if (y > .5) label = 'A';
+			else label = 'B';
+		} else if (RULE_COUNTER == 2) {
+			if (x > .5) label = 'A';
+			else label = 'B';
+		} else if (RULE_COUNTER == 3) {
+			if (y < .5) label = 'A';
+			else label = 'B';
+		}
+	} else if (RULE_COND == 'ii') {
+		if (RULE_COUNTER == 0) {
+			if (y > x) label = 'A';
+			else label = 'B';
+		} else if (RULE_COUNTER == 1) {
+			if (x > (1 - y)) label = 'A';
+			else label = 'B';
+		} else if (RULE_COUNTER == 2) {
+			if (x > y) label = 'A';
+			else label = 'B';
+		} else if (RULE_COUNTER == 3) {
+			if (x < (1-y)) label = 'A';
+			else label = 'B';
+		}
+	}
+
+	return label;
+}
+
 
 
 var Antenna = function(args) {
@@ -168,7 +190,7 @@ var Rectangle = function(args) {
 
 var Stimulus = function(args) {
 	var self = this;
-	self.id = 'test';
+	self.id = 'stimulus';
 	self.stage = args['stage'];
 	self.stage_h = Number(self.stage.attr("height"));
 	self.stage_w = Number(self.stage.attr("width"));
@@ -179,13 +201,13 @@ var Stimulus = function(args) {
 	// with continuous values from 0 to 1
 	self.coords = ('coords' in args) ? args['coords'] : [Math.random(), Math.random()];
 	self.init_coords = [self.coords[0], self.coords[1]];
-	output(['coords', self.coords]);
+	output(['init_coords', self.coords]);
 
 	// stimulus values are converted
 	// into rendered perceptual values based
 	// on ranges for each dimension
 	self.fvalue = cart2stim(self.coords[0], self.coords[1]);
-	output(['fvalue', self.fvalue]);
+	output(['init_fvalue', self.fvalue]);
 
 	self.x = args['x'];
 	self.y = args['y'];
@@ -195,6 +217,7 @@ var Stimulus = function(args) {
 
 	self.active_dim = (Math.random() < .5) ? 0 : 1;
 	self.start_pos = null;
+	self.pos = null;
 
 	output(['active_dim', self.active_dim]);
 
@@ -256,6 +279,68 @@ var Stimulus = function(args) {
 		self.start_btn.attr('opacity', 0.);
 	}
 
+
+	self.listen_for_classify = function() {
+
+		var label = classify(self.coords);
+		output(['classify', 'label', label]);
+
+		self.update_tip('Which category does this shape belong to? Press A or B to respond');
+
+		self.labelA = self.stage.append('text')
+							    .attr('x', self.x - 60)
+							    .attr('y', 85)
+							    .attr('font-size', '80px')
+							    .attr('font-family', 'Georgia')
+							    .attr('text-anchor', 'middle')
+								.attr('fill', '#D8D8D8')
+							    .text('A');
+
+		self.labelB = self.stage.append('text')
+							    .attr('x', self.x + 60)
+							    .attr('y', 85)
+							    .attr('font-size', '80px')
+							    .attr('font-family', 'Georgia')
+							    .attr('text-anchor', 'middle')
+								.attr('fill', '#D8D8D8')
+							    .text('B');
+
+		self.sep = self.stage.append('text')
+							    .attr('x', self.x)
+							    .attr('y', 65)
+							    .attr('font-size', '30px')
+							    .attr('font-family', 'Georgia')
+							    .attr('text-anchor', 'middle')
+								.attr('fill', '#D8D8D8')
+							    .text('or');
+
+
+		$(window).bind('keydown', function(e) {
+			if (e.keyCode == '65' || e.keyCode == '66') {
+				var resp = (e.keyCode == '65') ? 'A' : 'B';
+				output(['classify', 'response', resp]);
+				output(['classify', 'correct', resp==label]);
+				acc.push(1 * (resp==label));
+
+				if (resp == 'A') {
+					self.labelA.attr('fill', 'black');
+				} else {
+					self.labelB.attr('fill', 'black');
+				}
+
+				setTimeout(function() {
+					self.labelA.remove();
+					self.labelB.remove();
+					self.sep.remove()
+					self.finish();
+				}, 600);
+
+			}
+		});
+
+	}
+
+
 	self.listen_for_start = function() {
 
 		self.draw_start_button();
@@ -264,7 +349,7 @@ var Stimulus = function(args) {
 
 		// record starting mouse position
 		self.start_btn.on('click', function() {
-
+			output(['clicked_start']);
 			self.start_pos = d3.mouse(this);
 			self.remove_start_button();
 			self.selection();
@@ -275,7 +360,6 @@ var Stimulus = function(args) {
 
 	self.selection = function() {
 
-		output(['selection']);
 
 		if (SEL_COND == 'single') {
 			self.update_dimension();
@@ -286,18 +370,17 @@ var Stimulus = function(args) {
 
 
 		self.stage.on('mousemove', function() {
-			pos = d3.mouse(this);
-
-			// relative x position
-			dist = [pos[0] - self.start_pos[0], pos[1] - self.start_pos[1]]
+			self.pos = d3.mouse(this);
+			dist = [self.pos[0] - self.start_pos[0], self.pos[1] - self.start_pos[1]]
 			self.update(dist);
-
 		})
 
-		// listen for submit
 		$(window).bind('keydown', function(e) {
 
+			// submit
 			if (e.keyCode == '32') {
+				output(['selection', 'coords', self.coords[0], self.coords[1]]);
+				output(['selection', 'fvalue', self.fvalue[0], self.fvalue[1]]);
 
 				// submit
 				self.feedback();
@@ -308,6 +391,9 @@ var Stimulus = function(args) {
 				self.active_dim = (self.active_dim == 0) ? 1 : 0;
 				output(['active_dim', self.active_dim]);
 				self.update_dimension();
+				self.start_pos = [self.pos[0], self.pos[1]];
+				self.init_coords = [self.coords[0], self.coords[1]];
+				output(['new_start_pos', self.start_pos]);
 			}
 
 		})
@@ -346,8 +432,7 @@ var Stimulus = function(args) {
 		self.remove_tips();
 
 		// classify stimulus
-		label = 'A';
-		labelclass = 'catA';
+		label = classify(self.coords);
 
 		// remove selection handlers
 		self.stage.on('mousemove', function(e) {});
@@ -356,10 +441,10 @@ var Stimulus = function(args) {
 		self.label = self.stage.append('text')
 							   .attr('id', 'categorylabel')
 							   .attr('x', self.x)
-							   .attr('y', 100)
+							   .attr('y', 85)
 							   .attr('font-size', '80px')
+							   .attr('font-family', 'Georgia')
 							   .attr('text-anchor', 'middle')
-							   .attr('class', labelclass)
 							   .text(label);
 
 		$(window).bind('keydown', function(e) {
@@ -376,181 +461,15 @@ var Stimulus = function(args) {
 
 	self.finish = function() {
 		// remove stimulus and label
-		self.label.remove();
+		if (self.label!=undefined) self.label.remove();
 		self.obj.stim.remove();
+		self.remove_tips();
 		$(window).unbind('keydown');
-
-
 		callback();
 	}
 
 	return self;
 }
-
-
-
-/*
-var Item = function(pars) {
-	var self = this;
-
-	self.stage = pars['stage'];
-	self.ind = pars['ind'];
-	self.id = 'item-' + self.ind;
-	self.row = pars['row'];
-	self.col = pars['col'];
-	self.width = pars['width'];
-	self.height = pars['height'];
-	self.x_off = pars['x_off'] | 0;
-	self.x = self.width * self.row + self.x_off;
-	self.y = self.height * self.col;
-	self.framedelay = pars['framedelay'];
-	self.duration = pars['duration'];
-	self.img = pars['image'];
-	self.blocking = pars['blocking'] | true;
-
-	padding = 10;
-	self.obj_x = self.x + padding;
-	self.obj_y = self.y + padding;
-	self.obj_w = self.width - 2 * padding;
-	self.obj_h = self.height - 2 * padding;
-
-	// state variables
-	self.active = false;
-	self.framed = false;
-
-
-	self.disp = self.stage.append('g')
-						  .attr('id', self.id);
-
-
-	self.obj = self.disp.append('image')
-						.attr('x', self.obj_x)
-						.attr('y', self.obj_y)
-						.attr('width', self.obj_w)
-						.attr('height', self.obj_h)
-						.attr('opacity', 0.)
-						.attr('xlink:href', self.img);
-
-	self.frame = self.disp.append('rect')
-						  .attr('x', self.x + padding/2)
-						  .attr('y', self.y + padding/2)
-						  .attr('width', self.width - padding)
-						  .attr('height', self.height - padding)
-						  .attr('rx', 15)
-						  .attr('ry', 15)
-						  .attr('stroke-width', 5)
-						  .attr('stroke', '#D8D8D8')
-						  .attr('fill', 'none')
-						  .attr('opacity', 0.)
-
-
-	self.frame_on = function() {
-		self.framed = true;
-		self.frame.attr('stroke', 'red')
-				  .attr('opacity', 1.);
-	};
-
-	self.frame_inactive = function() {
-		self.framed = false;
-		self.frame.attr('stroke', '#D8D8D8')
-				  .attr('opacity', 1.);
-	};
-
-	self.frame_off = function() {
-		self.framed = false;
-		self.frame.attr('opacity', 0.);
-	};
-
-	self.object_on = function() {
-		self.obj.attr('opacity', 1.)
-	};
-
-	self.object_off = function() {
-		self.active = false;
-		self.obj.attr('opacity', 0.)
-	};
-
-	self.show = function(duration, callback) {
-		self.object_on();
-		setTimeout(function() {
-			self.object_off();
-			if (callback) callback();
-		}, duration);
-	};
-
-	self.study = function() {
-		self.object_on();
-
-		switch (self.duration) {
-
-			case 'none':
-				break;
-			case 'selfpaced':
-				break;
-			default:
-				setTimeout(function() {
-					active_item = undefined;
-					self.frame_inactive();
-					self.object_off();
-				}, self.duration);
-				break;
-		};
-
-	};
-
-
-	self.listen = function() {
-
-		self.disp.on('click', function() {
-
-			// if not active, then proceed with study episode
-			if (!self.active && active_item==undefined) {
-
-				self.active = true;
-				if (self.blocking) active_item = self.id;
-
-				self.frame_on();
-				setTimeout(function() {
-					self.study();
-				}, self.framedelay);
-
-			// otherwise only handle clicks if study
-			// duration is self-paced
-			} else if (self.id==active_item && self.duration=='selfpaced') {
-
-				active_item = undefined;
-				self.object_off();
-				self.frame_inactive();
-
-			};
-
-		});
-
-	};
-
-	self.listen_test = function() {
-
-		self.disp.on('click', function() {
-
-			if (self.active) {
-				self.active = false;
-				self.frame_inactive();
-			} else {
-				self.active = true;
-				self.frame_on();
-			}
-
-		});
-
-	}
-
-
-	self.unlisten = function() {
-		self.disp.on('click', function() {});
-	};
-
-};
-*/
 
 
 var TrainingBlock = function(block) {
@@ -565,10 +484,14 @@ var TrainingBlock = function(block) {
 
 	self.trial = function() {
 		self.trial_ind += 1;
+		outpfx = ['training', self.block, self.trial_ind];
 
 		if (self.trial_ind == N_TRIALS_TRAINING) {
 			exp.proceed();
 		} else {
+
+			$('#aboveStage').html('<p>Round '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=learning>learning</span></p>');
+
 			self.stim = new Stimulus({'stage': self.stage,
 									  'x': self.stage_w/2,
 									  'y': self.stage_h/2,
@@ -582,6 +505,40 @@ var TrainingBlock = function(block) {
 };
 
 
+var TestBlock = function(block) {
+	var self = this;
+	self.block = block;
+	psiTurk.showPage('stage.html');
+	self.stage = d3.select('#stagesvg');
+	self.stage_h = Number(self.stage.attr("height"));
+	self.stage_w = Number(self.stage.attr("width"));
+	self.x_off = (Number(self.stage.attr("width")) - self.stage_w) / 2;
+	self.trial_ind = -1;
+
+	self.trial = function() {
+		self.trial_ind += 1;
+		outpfx = ['test', self.block, self.trial_ind];
+
+		if (self.trial_ind == N_TRIALS_TEST) {
+			exp.proceed();
+		} else {
+
+			$('#aboveStage').html('<p>Round '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=test>test</span></p>');
+
+			self.stim = new Stimulus({'stage': self.stage,
+									  'x': self.stage_w/2,
+									  'y': self.stage_h/2,
+								      'callback': self.trial});
+			self.stim.draw();
+			self.stim.listen_for_classify();
+		}
+	}
+
+	self.trial();
+};
+
+
+
 
 var Exit = function() {
 	output('COMPLETE');
@@ -593,27 +550,41 @@ var Exit = function() {
 var Experiment = function() {
 	var self = this;
 	self.block = -1;
-	self.testblock = -1;
+
+	output(['rule_cond', RULE_COND]);
+	output(['stim_cond', STIM_COND]);
+	output(['sel_cond', SEL_COND]);
+	output(['dim_mapping', DIM_MAPPING]);
+
 
 	self.instructions = function() {
+		self.proceed = self.training;
 		Instructions1();
 	}
 
 	self.training = function() {
 		self.block += 1;
-
 		if (self.block == N_BLOCKS) {
 			self.finish();
 		} else {
+			self.proceed = self.test;
 			self.view = new TrainingBlock(self.block);
+
 		}
+	}
+
+	self.test = function() {
+		output(['test', self.block]);
+		self.proceed = self.training;
+		self.view = new TestBlock(self.block);
 	}
 
 	self.finish = function() {
 		Exit();
 	};
 
-	self.instructions();
+	//self.instructions();
+	self.training();
 };
 
 
