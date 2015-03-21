@@ -132,7 +132,6 @@ strong {
     font-size: 16pt;
     margin-top: 20px;
     line-height: 1.3em;
-    
 }
 
 .svg-container {
@@ -163,6 +162,12 @@ strong {
     padding-right: 20px;
     text-align: right;
 }
+
+.questionnaire {
+  margin: 80px;
+  text-align: left;
+}
+
 
 span.learning {
   font-family: sans-serif;

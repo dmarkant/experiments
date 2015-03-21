@@ -1,5 +1,3 @@
-condition = 4;
-
 RULE_COND = ['rb', 'ii'][Math.floor(condition/4)];
 STIM_COND = ['antenna', 'rectangle'][Math.floor(condition/2) % 2];
 SEL_COND =  ['both', 'single'][condition % 2];
@@ -7,15 +5,18 @@ SEL_COND =  ['both', 'single'][condition % 2];
 RULE_COUNTER = counterbalance;
 
 var N_BLOCKS = 8,
-	N_TRIALS_TRAINING = 4,
-	N_TRIALS_TEST = 4;
+	N_TRIALS_TRAINING = 16,
+	N_TRIALS_TEST = 32;
 
 var exp,
 	active_item = undefined,
 	yokeddata = [],
 	stimuli,
 	outpfx = [],
-	acc = [];
+	acc = [],
+	acc_by_block = [],
+	testset_file = 'static/testsets.csv',
+	testitems = [];
 
 // Initalize psiturk object
 var psiTurk = new PsiTurk(uniqueId, adServerLoc, mode);
@@ -49,6 +50,48 @@ function output(arr) {
     psiTurk.recordTrialData(arr);
     if (LOGGING) console.log(arr.join(" "));
 };
+
+
+
+// load test items
+function load_test_sets() {
+
+	path = testset_file;
+    output('loading test sets from: '+testset_file);
+    var results = [];
+	$.ajax({url: path,
+			success: function(data) {
+				$.each(data.split('\n'), function() {
+					var row = this.split(',');
+					if (row[0]!="") {
+						var arr = row.slice(1, row.length);
+						arr = _.map(arr, function(x) { return Number(x); });
+
+						// reshape
+						var newArr = [];
+						while(arr.length) newArr.push(arr.splice(0,2));
+
+						// shuffle order of items within each block
+						newArr = shuffle(newArr);
+
+						results.push(newArr);
+					};
+				});
+			},
+            error: function() {
+                output('failed to load option sets!');
+            },
+			async: false
+	});
+
+	// shuffle entire set
+	results = shuffle(results);
+    return results;
+};
+
+
+
+
 
 
 function clear_buttons() {
@@ -188,12 +231,14 @@ var Rectangle = function(args) {
 
 }
 
+
 var Stimulus = function(args) {
 	var self = this;
 	self.id = 'stimulus';
 	self.stage = args['stage'];
 	self.stage_h = Number(self.stage.attr("height"));
 	self.stage_w = Number(self.stage.attr("width"));
+	self.practice = ('practice' in args) ? args['practice'] : false;
 
 	callback = args['callback'];
 
@@ -201,13 +246,13 @@ var Stimulus = function(args) {
 	// with continuous values from 0 to 1
 	self.coords = ('coords' in args) ? args['coords'] : [Math.random(), Math.random()];
 	self.init_coords = [self.coords[0], self.coords[1]];
-	output(['init_coords', self.coords]);
+	output(['init_coords', self.coords[0], self.coords[1]]);
 
 	// stimulus values are converted
 	// into rendered perceptual values based
 	// on ranges for each dimension
 	self.fvalue = cart2stim(self.coords[0], self.coords[1]);
-	output(['init_fvalue', self.fvalue]);
+	output(['init_fvalue', self.fvalue[0], self.fvalue[1]]);
 
 	self.x = args['x'];
 	self.y = args['y'];
@@ -218,6 +263,7 @@ var Stimulus = function(args) {
 	self.active_dim = (Math.random() < .5) ? 0 : 1;
 	self.start_pos = null;
 	self.pos = null;
+	self.pos_sampler = 0;
 
 	output(['active_dim', self.active_dim]);
 
@@ -232,11 +278,18 @@ var Stimulus = function(args) {
 			self.status.remove();
 		}
 
+		if (DIM_MAPPING == 0) {
+			active_name = DIMENSIONS[STIM_COND][self.active_dim]['name']
+		} else {
+			other = (self.active_dim == 0) ? 1 : 0;
+			active_name = DIMENSIONS[STIM_COND][other]['name']
+		}
+
 		self.status = self.stage.append('text')
 							 .attr('x', self.x)
 							 .attr('y', self.stage_h - 50)
 							 .attr('text-anchor', 'middle')
-							 .text('Active dimension: '+ DIMENSIONS[STIM_COND][self.active_dim]['name']);
+							 .text('Active dimension: '+ active_name);
 
 	}
 
@@ -351,6 +404,7 @@ var Stimulus = function(args) {
 		self.start_btn.on('click', function() {
 			output(['clicked_start']);
 			self.start_pos = d3.mouse(this);
+			output(['start_pos', self.start_pos[0], self.start_pos[1]]);
 			self.remove_start_button();
 			self.selection();
 
@@ -360,12 +414,11 @@ var Stimulus = function(args) {
 
 	self.selection = function() {
 
-
 		if (SEL_COND == 'single') {
 			self.update_dimension();
 			self.update_tip('Press X to change active dimension; press Spacebar to learn category');
 		} else {
-			self.update_tip('Press Spacebar to learn category');
+			self.update_tip('Adjust the shape and press Spacebar to learn category');
 		};
 
 
@@ -373,12 +426,17 @@ var Stimulus = function(args) {
 			self.pos = d3.mouse(this);
 			dist = [self.pos[0] - self.start_pos[0], self.pos[1] - self.start_pos[1]]
 			self.update(dist);
+			self.pos_sampler += 1;
+			if (self.pos_sampler % 20 == 0) {
+				output(['sampled_pos', self.pos[0], self.pos[1], dist[0], dist[1]]);
+			}
 		})
 
 		$(window).bind('keydown', function(e) {
 
 			// submit
 			if (e.keyCode == '32') {
+				output(['selection', 'pos', self.pos[0], self.pos[1]]);
 				output(['selection', 'coords', self.coords[0], self.coords[1]]);
 				output(['selection', 'fvalue', self.fvalue[0], self.fvalue[1]]);
 
@@ -428,11 +486,13 @@ var Stimulus = function(args) {
 
 
 	self.feedback = function() {
-		output(['feedback']);
 		self.remove_tips();
 
 		// classify stimulus
 		label = classify(self.coords);
+		output(['feedback', self.coords[0], self.coords[1], label]);
+
+		if (self.practice) label = '??';
 
 		// remove selection handlers
 		self.stage.on('mousemove', function(e) {});
@@ -450,6 +510,7 @@ var Stimulus = function(args) {
 		$(window).bind('keydown', function(e) {
 			if (e.keyCode == '32') {
 				// submitted
+				output(['continue']);
 				self.finish();
 			}
 		});
@@ -515,6 +576,8 @@ var TestBlock = function(block) {
 	self.x_off = (Number(self.stage.attr("width")) - self.stage_w) / 2;
 	self.trial_ind = -1;
 
+	self.testitems = testitems[block];
+
 	self.trial = function() {
 		self.trial_ind += 1;
 		outpfx = ['test', self.block, self.trial_ind];
@@ -528,7 +591,8 @@ var TestBlock = function(block) {
 			self.stim = new Stimulus({'stage': self.stage,
 									  'x': self.stage_w/2,
 									  'y': self.stage_h/2,
-								      'callback': self.trial});
+								      'callback': self.trial,
+									  'coord': self.testitems[self.trial_ind]});
 			self.stim.draw();
 			self.stim.listen_for_classify();
 		}
@@ -538,6 +602,46 @@ var TestBlock = function(block) {
 };
 
 
+var Feedback = function() {
+	$('#main').html('');
+	var self = this;
+	psiTurk.showPage('feedback.html');
+	self.div = $('#container-instructions');
+	outpfx = ['feedback'];
+
+	// calculate final bonus
+	total_correct = acc.reduce(function(a, b){return a+b;})
+	output(['total_correct', total_correct]);
+
+	var t = 'All done! You correctly classified '+total_correct+' out of '+(N_BLOCKS * N_TRIALS_TEST)+' shapes ' +
+		    'during the test turns, which means that you have earned a bonus of $'+(total_correct/100).toFixed(2)+'.';
+	self.div.append(instruction_text_element(t));
+
+	var t = 'You will be eligible to receive the bonus after you\'ve answered the following questions:'
+	self.div.append(instruction_text_element(t));
+
+	var error_message = '<h1>Oops!</h1><p>Something went wrong submitting your HIT. '+
+					    'Press the button to resubmit.</p><button id=resubmit>Resubmit</button>';
+
+	record_responses = function() {
+
+		psiTurk.recordTrialData(['postquestionnaire', 'submit']);
+
+		$('textarea').each( function(i, val) {
+			psiTurk.recordUnstructuredData(this.id, this.value);
+		});
+		$('select').each( function(i, val) {
+			psiTurk.recordUnstructuredData(this.id, this.value);
+		});
+
+		Exit();
+	};
+
+	$("#btn-submit").click(function() {
+		record_responses();
+	});
+
+};
 
 
 var Exit = function() {
@@ -556,13 +660,13 @@ var Experiment = function() {
 	output(['sel_cond', SEL_COND]);
 	output(['dim_mapping', DIM_MAPPING]);
 
-
 	self.instructions = function() {
 		self.proceed = self.training;
 		Instructions1();
 	}
 
 	self.training = function() {
+		psiTurk.saveData();
 		self.block += 1;
 		if (self.block == N_BLOCKS) {
 			self.finish();
@@ -574,17 +678,20 @@ var Experiment = function() {
 	}
 
 	self.test = function() {
+		psiTurk.saveData();
 		output(['test', self.block]);
 		self.proceed = self.training;
 		self.view = new TestBlock(self.block);
 	}
 
 	self.finish = function() {
-		Exit();
+		Feedback();
 	};
 
-	//self.instructions();
-	self.training();
+	// load and randomize test items
+	testitems = load_test_sets();
+
+	self.instructions();
 };
 
 

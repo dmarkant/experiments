@@ -69,6 +69,8 @@ var Instructions1 = function() {
 var Instructions2 = function() {
 	var self = init_instruction(this, 2);
 
+    var dims = (STIM_COND == 'antenna') ? 'angle and radius' : 'width and height';
+
     self.add_text('You will learn how to classify shapes during a series of <span class=learning>learning</span> turns. ' +
                   'On each <span class=learning>learning</span> turn a new shape will appear, along with a green circle. ' +
                   'After you click on the green circle, you can then adjust the shape to take on whatever form you '+
@@ -76,14 +78,15 @@ var Instructions2 = function() {
 
     if (SEL_COND == 'single') {
         self.add_text('You will be able to adjust the shape along one dimension at a time by moving the ' +
-                      'mouse from left to right, and can switch between dimensions by pressing the X key.');
+                      'mouse from left to right, and can switch between dimensions ('+dims+') by pressing the X key.');
     } else if (SEL_COND == 'both') {
         self.add_text('You will be able to adjust the shape along both dimensions by moving the mouse in ' +
                       'different directions.');
     }
 
     self.add_text('After you have adjusted the shape to a form that you want to learn about, press the ' +
-                  'spacebar to find out which category it belongs to. Give it a try for the example below:');
+                  'spacebar to find out which category it belongs to. Give it a try for the example below ' +
+                  '(for now you will see "??" instead of the true category for the shape you select):');
 
     self.div.append(svg_element('urn-svg', 740, 600));
 	self.stage = d3.select('#urn-svg');
@@ -93,7 +96,8 @@ var Instructions2 = function() {
                               'x': self.stage_w/2,
                               'y': self.stage_h/2,
                               'coords': [.8, .4],
-                              'callback': Instructions3});
+                              'callback': Instructions3,
+                              'practice': true});
     self.stim.draw();
     self.stim.listen_for_start();
 
@@ -131,9 +135,10 @@ var InstructionsComplete = function() {
                   'test</span> turns. After you have finished all the rounds, you will see the bonus ' +
                   'you earned from the <span class=test>test</span> turns.');
 
-    self.add_text('Please stay focused on the task. If you are idle for too long, the experiment will ' +
-                  'be aborted and you will forgo payment. Once you have started you will be unable to ' +
-                  'reload the page or view these instructions again.');
+    self.add_text('Please stay focused on the task until it is complete. Please do not use any external aids ' +
+                  'during the experiment (e.g., pencil and paper, screenshots, etc.). If you are idle for too ' +
+                  'long, the experiment will end automatically and you will forgo payment. Once you have started ' +
+                  'you will be unable to reload the page or view these instructions again.');
 
     self.add_text('Click below to get started. Good luck!');
 
