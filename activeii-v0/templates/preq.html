@@ -1,0 +1,73 @@
+<h1>Instructions</h1>
+<div id="container-instructions">
+
+	<div id=warning class="instruction-body">
+    Please answer the questions below to make sure you have
+    understood the instructions so far:
+    </div>
+    
+
+    <div id="questionnaire">
+
+        <div class="question">
+            <p class="questiontext">
+            What is the goal of <span class=learning>LEARNING</span> turns?
+            </p>
+            <select id="learningphase" name="learningphase">
+                <option value="noresp" SELECTED></option>
+                <option value="0">To learn how to classify shapes based on their features</option>
+                <option value="1">To learn which category of shapes is more common than the other</option>
+                <option value="2">To earn a reward by selecting shapes quickly</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            How many categories of shapes will occur?
+            </p>
+            <select id="ncategories" name="ncategories">
+                <option value="noresp" SELECTED></option>
+                <option value="0">1</option>
+                <option value="1">2</option>
+                <option value="2">3</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            During <span class=test>TEST</span> turns, the goal is to correctly classify:
+            </p>
+            <select id="testgoal" name="testgoal">
+                <option value="noresp" SELECTED></option>
+                <option value="0">The exact same shapes that were chosen during learning</option>
+                <option value="1">Shapes from entirely new categories</option>
+                <option value="2">New shapes from categories A and B</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            During <span class=test>TEST</span> turns, a bonus will be awarded for:
+            </p>
+            <select id="bonus" name="bonus">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Responding before a deadline</option>
+                <option value="1">Each shape that is correctly classified</option>
+                <option value="2">Correctly classifying a single shape that is selected at the end of the experiment</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div id="container-prompt">
+        <div id="prompt"></div>
+        <a href="#" id=btn-continue class="btn btn-default btn-lg">Submit answers</a>        
+        <a href="#" id=btn-startover class="btn btn-default btn-lg">See instructions again</a>
+    </div>
+</div>
+
+<div id="belowStage">
+    <div id="instruction"></div>
+    <div id="buttons"></div>
+</div>
+

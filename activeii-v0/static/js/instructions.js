@@ -35,8 +35,8 @@ var Instructions1 = function() {
     self.add_text('Welcome! In this experiment your goal is to learn to classify ' +
                   'shapes into two different categories. The shapes look like this:');
 
-	self.div.append(svg_element('urn-svg', 740, 300));
-	self.stage = d3.select('#urn-svg');
+	self.div.append(svg_element('stagesvg', 740, 300));
+	self.stage = d3.select('#stagesvg');
 	self.stage_h = Number(self.stage.attr("height"));
 	self.stage_w = Number(self.stage.attr("width"));
     self.stim = new Stimulus({'stage': self.stage,
@@ -88,8 +88,8 @@ var Instructions2 = function() {
                   'spacebar to find out which category it belongs to. Give it a try for the example below ' +
                   '(for now you will see "??" instead of the true category for the shape you select):');
 
-    self.div.append(svg_element('urn-svg', 740, 600));
-	self.stage = d3.select('#urn-svg');
+    self.div.append(svg_element('stagesvg', 740, 600));
+	self.stage = d3.select('#stagesvg');
 	self.stage_h = Number(self.stage.attr("height"));
 	self.stage_w = Number(self.stage.attr("width"));
     self.stim = new Stimulus({'stage': self.stage,
@@ -116,14 +116,57 @@ var Instructions3 = function() {
                   '$.01 added for every correct classification. Thus, you should try to learn about the categories as quickly ' +
                   'as possible so as to maximize your earnings from <span class=test>test</span> turns.');
 
-    add_next_instruction_button(Instructions4);
+    add_next_instruction_button(InstructionsQuiz);
 }
 
 
-var Instructions4 = function() {
-	var self = init_instruction(this, 4);
-    add_next_instruction_button(InstructionsComplete);
-}
+
+var InstructionsQuiz = function() {
+	output(['instructions', 'preq']);
+	var self = this;
+	psiTurk.showPage('preq.html');
+
+    var checker = function() {
+		var errors = [];
+
+		if ($('#learningphase option:selected').val() != "0") {
+			errors.push("learningphase");
+		};
+		if ($('#ncategories option:selected').val() != "1") {
+			errors.push("ncategories");
+		};
+		if ($('#testgoal option:selected').val() != "2") {
+			errors.push("testgoal");
+		};
+		if ($('#bonus option:selected').val() != "1") {
+			errors.push("bonus");
+		};
+
+		output(['instructions', 'preq', 'nerrors', errors.length]);
+		output(['instructions', 'preq', 'errors', errors]);
+
+		if (errors.length == 0) {
+			InstructionsComplete();
+		} else {
+			$('#btn-continue').hide();
+			for(var i=0; i<errors.length; i++) {
+				$('#'+errors[i]).css("border","2px solid red");
+			};
+			$("#warning").css("color","red");
+			$("#warning").html("<p>Looks like you answered some questions incorrectly (highlighted in red). Please review them and click the \"Repeat\" button at the bottom to see the instructions again.</p>");
+		};
+
+	};
+
+
+	$('#btn-startover').on('click', function() {
+		output('instructions', 'restart');
+		Instructions1();
+	});
+
+	$('#btn-continue').on('click', function() { checker(); });
+
+};
 
 
 var InstructionsComplete = function() {
@@ -146,51 +189,3 @@ var InstructionsComplete = function() {
 
 };
 
-
-/*
-var InstructionsQuiz = function() {
-	output(['instructions', 'preq']);
-	var self = this;
-	pager.showPage('preq.html');
-
-	var checker = function() {
-		var errors = [];
-
-		if ($('#maxtrials option:selected').val() != "1") {
-			errors.push("maxtrials");
-		};
-		if ($('#expiration option:selected').val() != "1") {
-			errors.push("expiration");
-		};
-		if ($('#probexpire option:selected').val() != "2") {
-			errors.push("probexpire");
-		};
-		if ($('#whichexpire option:selected').val() != "0") {
-			errors.push("whichexpire");
-		};
-
-		output(['instructions', 'preq', 'errors', errors].flatten());
-
-		if (errors.length == 0) {
-			InstructionsComplete();
-		} else {
-			$('#continue').hide();
-			for(var i=0; i<errors.length; i++) {
-				$('#'+errors[i]).css("border","2px solid red");
-			};
-			$("#warning").css("color","red");
-			$("#warning").html("<p>Looks like you answered some questions incorrectly (highlighted in red). Please review them and click the \"Repeat\" button at the bottom to see the instructions again.</p>");
-		};
-
-	};
-
-
-	$('#startover').on('click', function() {
-		output('instructions', 'restart');
-		Instructions1();
-	});
-
-	$('#continue').on('click', function() { checker(); });
-
-};
-*/

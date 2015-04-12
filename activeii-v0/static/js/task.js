@@ -5,8 +5,8 @@ SEL_COND =  ['both', 'single'][condition % 2];
 RULE_COUNTER = counterbalance;
 
 var N_BLOCKS = 8,
-	N_TRIALS_TRAINING = 8,
-	N_TRIALS_TEST = 8;
+	N_TRIALS_TRAINING = 16,
+	N_TRIALS_TEST = 32;
 
 var exp,
 	active_item = undefined,
@@ -24,6 +24,7 @@ var LOGGING = mode != "debug";
 var LOGGING = true;
 
 psiTurk.preloadPages(['instruct.html',
+					  'preq.html',
 					  'chooser.html',
 					  'stage.html',
 					  'feedback.html']);
@@ -342,7 +343,7 @@ var Stimulus = function(args) {
 
 		var label = classify(self.coords);
 		output(['classify', 'label', label]);
-
+		$('#stagesvg').css({'cursor': 'none'});
 		self.update_tip('Which category does this shape belong to? Press A or B to respond');
 
 		self.labelA = self.stage.append('text')
@@ -400,9 +401,8 @@ var Stimulus = function(args) {
 
 
 	self.listen_for_start = function() {
-
+		$('#stagesvg').css({'cursor': 'auto'});
 		self.draw_start_button();
-
 		self.update_tip('Click the green dot to start');
 
 		// record starting mouse position
@@ -411,6 +411,8 @@ var Stimulus = function(args) {
 			self.start_pos = d3.mouse(this);
 			output(['start_pos', self.start_pos[0], self.start_pos[1]]);
 			self.remove_start_button();
+
+			$('#stagesvg').css({'cursor': 'none'});
 			self.selection();
 
 		})
@@ -530,6 +532,7 @@ var Stimulus = function(args) {
 		if (self.label!=undefined) self.label.remove();
 		self.obj.stim.remove();
 		self.remove_tips();
+		$('#stagesvg').css({'cursor': 'auto'});
 		$(window).unbind('keydown');
 		callback();
 	}
