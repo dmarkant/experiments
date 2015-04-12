@@ -5,8 +5,8 @@ SEL_COND =  ['both', 'single'][condition % 2];
 RULE_COUNTER = counterbalance;
 
 var N_BLOCKS = 8,
-	N_TRIALS_TRAINING = 16,
-	N_TRIALS_TEST = 32;
+	N_TRIALS_TRAINING = 8,
+	N_TRIALS_TEST = 8;
 
 var exp,
 	active_item = undefined,
@@ -313,6 +313,11 @@ var Stimulus = function(args) {
 		if (self.status != undefined) self.status.remove();
 	}
 
+	self.remove = function() {
+		self.obj.stim.remove();
+		self.obj = undefined;
+	};
+
 	self.draw = function() {
 		self.obj.draw(self.fvalue);
 	};
@@ -583,7 +588,7 @@ var TestBlock = function(block) {
 		outpfx = ['test', self.block, self.trial_ind];
 
 		if (self.trial_ind == N_TRIALS_TEST) {
-			exp.proceed();
+			self.feedback();
 		} else {
 
 			$('#aboveStage').html('<p>Round '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=test>test</span></p>');
@@ -596,6 +601,44 @@ var TestBlock = function(block) {
 			self.stim.draw();
 			self.stim.listen_for_classify();
 		}
+	}
+
+	self.feedback = function() {
+		outpfx = ['test', self.block, 'feedback'];
+		ind = self.block * N_TRIALS_TEST;
+		block_ncorrect = acc.slice(ind, (ind + N_TRIALS_TEST)).sum();
+		output(['ncorrect', block_ncorrect]);
+
+		self.stim.remove();
+
+		var t = 'On this round you correctly classified '+ block_ncorrect+
+				' out of '+N_TRIALS_TEST+' objects.';
+		self.feedback = self.stage.append('text')
+							    .attr('x', self.stage_w/2)
+							    .attr('y', self.stage_h/2)
+							    .attr('font-size', '20px')
+							    .attr('font-family', 'Georgia')
+							    .attr('text-anchor', 'middle')
+								.attr('fill', 'black')
+							    .text(t);
+
+
+		$(window).bind('keydown', function(e) {
+			if (e.keyCode == '32') {
+				// submitted
+				output(['continue']);
+				self.finish();
+			}
+		});
+
+		self.stim.update_tip('Press Spacebar to continue');
+
+	}
+
+	self.finish = function() {
+		$(window).unbind('keydown');
+		//$(window).bind('keydown', function(e) {});
+		exp.proceed();
 	}
 
 	self.trial();

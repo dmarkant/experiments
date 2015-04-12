@@ -46,6 +46,21 @@ Array.prototype.sample = function ( n ) {
 };
 
 
+Array.prototype.sum = function(selector) {
+    if (typeof selector !== 'function') {
+        selector = function(item) {
+            return item;
+        }
+    }
+    var sum = 0;
+    for (var i = 0; i < this.length; i++) {
+        sum += parseFloat(selector(this[i]));
+    }
+    return sum;
+};
+
+
+
 // Flatten taken from
 // http://tech.karbassi.com/2009/12/17/pure-javascript-flatten-array/
 Array.prototype.flatten = function flatten(){
