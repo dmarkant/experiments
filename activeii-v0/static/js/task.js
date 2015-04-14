@@ -703,6 +703,8 @@ var Experiment = function() {
 	var self = this;
 	self.block = -1;
 
+	output(['condition', condition]);
+	output(['counterbalance', counterbalance]);
 	output(['rule_cond', RULE_COND]);
 	output(['stim_cond', STIM_COND]);
 	output(['sel_cond', SEL_COND]);
