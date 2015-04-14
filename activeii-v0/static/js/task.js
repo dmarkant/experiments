@@ -1,6 +1,8 @@
-RULE_COND = ['rb', 'ii'][Math.floor(condition/4)];
-STIM_COND = ['antenna', 'rectangle'][Math.floor(condition/2) % 2];
-SEL_COND =  ['both', 'single'][condition % 2];
+RULE_COND = ['rb', 'ii'][Math.floor(condition/2)];
+STIM_COND = ['antenna', 'rectangle'][condition % 2];
+//STIM_COND = ['antenna', 'rectangle'][Math.floor(condition/2) % 2];
+//SEL_COND =  ['both', 'single'][condition % 2];
+SEL_COND = 'both';
 
 RULE_COUNTER = counterbalance;
 
