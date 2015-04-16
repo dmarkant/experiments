@@ -33,7 +33,7 @@ var Instructions1 = function() {
 	var self = init_instruction(this, 1);
 
     self.add_text('Willkommen! In diesem Experiment lernen Sie, Formen in ' +
-    				'zwei unterschiedliche Kategorien einzuordnen ' +
+    				'zwei unterschiedliche Kategorien einzuordnen. ' +
                   'Die Formen sehen so aus:');
 
 	self.div.append(svg_element('stagesvg', 740, 300));
@@ -173,10 +173,10 @@ var InstructionsComplete = function() {
 
     self.add_text('Gut gemacht! Sieht so aus, als ob Sie startklar wären. Sie werden jetzt ' +
                   N_BLOCKS + ' Blöcke abschließen, wobei jeder Block mit einer Reihe von <span class=learning>lernen</span>-Runden beginnt, ' +
-                  'gefolgt von einer Reihe von <span class=test>test</span>-Runden.' +
-                  'Nachdem Sie alle Runden abgeschlossen haben, sehen Sie den Bonus, der Sie in den <span class=test>test</span>-Runden verdient haben.');
+                  'gefolgt von einer Reihe von <span class=test>test</span>-Runden. ' +
+                  'Nachdem Sie alle Runden abgeschlossen haben, sehen Sie den Bonus, den Sie in den <span class=test>test</span>-Runden verdient haben.');
 
-    self.add_text('Bitte bleiben Sie bis zum Schluss auf der Aufgabe fokussiert. Bitte benutzen sie während des Experiments keine Hilfsmittel (z.B. Stift und Papier, Bildschirmaufnahmen etc.). ' +
+    self.add_text('Bitte bleiben Sie bis zum Schluss auf der Aufgabe fokussiert. Benutzen sie während des Experiments keine Hilfsmittel (z.B. Stift und Papier, Bildschirmaufnahmen etc.). ' +
                   'Falls Sie zu lange inaktiv sind, endet das Experiment automatisch und es wird auf Auszahlung verzichtet. Sobald Sie angefangen haben, ' +
                   'können Sie die Seite nicht mehr neu laden oder diese Instruktionen wieder ansehen. ');
 
@@ -185,4 +185,5 @@ var InstructionsComplete = function() {
     add_next_instruction_button(exp.training);
 
 };
+
 
