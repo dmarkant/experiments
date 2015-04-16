@@ -6,6 +6,8 @@ SEL_COND = 'both';
 
 RULE_COUNTER = counterbalance;
 
+var LANG = 'de'; // 'en' | 'de'
+
 var N_BLOCKS = 8,
 	N_TRIALS_TRAINING = 16,
 	N_TRIALS_TEST = 32;
@@ -26,10 +28,13 @@ var LOGGING = mode != "debug";
 var LOGGING = true;
 
 psiTurk.preloadPages(['instruct.html',
+					  'instruct_de.html',
 					  'preq.html',
+					  'preq_de.html',
 					  'chooser.html',
 					  'stage.html',
-					  'feedback.html']);
+					  'feedback.html',
+					  'feedback_de.html']);
 
 
 DIMENSIONS = {'antenna': [{'name': 'radius',
@@ -346,7 +351,9 @@ var Stimulus = function(args) {
 		var label = classify(self.coords);
 		output(['classify', 'label', label]);
 		$('#stagesvg').css({'cursor': 'none'});
-		self.update_tip('Which category does this shape belong to? Press A or B to respond');
+		self.update_tip((LANG=='en') ?
+						'Which category does this shape belong to? Press A or B to respond' :
+					    'Zu welcher Kategorie gehört diese Form? Drücken Sie A oder B zu antworten');
 
 		self.labelA = self.stage.append('text')
 							    .attr('x', self.x - 60)
@@ -405,7 +412,9 @@ var Stimulus = function(args) {
 	self.listen_for_start = function() {
 		$('#stagesvg').css({'cursor': 'auto'});
 		self.draw_start_button();
-		self.update_tip('Click the green dot to start');
+		self.update_tip((LANG=='en') ?
+						'Click the green dot to start' :
+						'Klicken Sie auf den grünen Punkt um zu beginnen');
 
 		// record starting mouse position
 		self.start_btn.on('click', function() {
@@ -427,7 +436,9 @@ var Stimulus = function(args) {
 			self.update_dimension();
 			self.update_tip('Press X to change active dimension; press Spacebar to learn category');
 		} else {
-			self.update_tip('Adjust the shape and press Spacebar to learn category');
+			self.update_tip((LANG=='en') ?
+							'Adjust the shape and press Spacebar to learn category' :
+						    'Anpassen Sie die Form und drücken die Leertaste um Kategorie zu lernen');
 		};
 
 
@@ -524,7 +535,7 @@ var Stimulus = function(args) {
 			}
 		});
 
-		self.update_tip('Press Spacebar to continue');
+		self.update_tip((LANG=='en') ? 'Press Spacebar to continue' : 'Drücken Sie die Leertaste um fortzufahren');
 
 	}
 
@@ -561,7 +572,9 @@ var TrainingBlock = function(block) {
 			exp.proceed();
 		} else {
 
-			$('#aboveStage').html('<p>Round '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=learning>learning</span></p>');
+			$('#aboveStage').html((LANG=='en') ?
+								  '<p>Round '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=learning>learning</span></p>' :
+								  '<p>Block '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=learning>lernen</span></p>');
 
 			self.stim = new Stimulus({'stage': self.stage,
 									  'x': self.stage_w/2,
@@ -596,7 +609,9 @@ var TestBlock = function(block) {
 			self.feedback();
 		} else {
 
-			$('#aboveStage').html('<p>Round '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=test>test</span></p>');
+			$('#aboveStage').html((LANG=='en') ?
+								  '<p>Round '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=test>test</span></p>' :
+								  '<p>Block '+(self.block+1)+'/'+N_BLOCKS+'</p><p><span class=test>test</span></p>' );
 
 			self.stim = new Stimulus({'stage': self.stage,
 									  'x': self.stage_w/2,
@@ -616,8 +631,13 @@ var TestBlock = function(block) {
 
 		self.stim.remove();
 
-		var t = 'On this round you correctly classified '+ block_ncorrect+
-				' out of '+N_TRIALS_TEST+' objects.';
+		if (LANG=='en') {
+			var t = 'On this round you correctly classified '+ block_ncorrect+
+					' out of '+N_TRIALS_TEST+' objects.';
+		} else {
+			var t = 'In diesem Block haben Sie '+ block_ncorrect+
+					' von '+N_TRIALS_TEST+' Objekte korrekt klassifiziert.';
+		}
 		self.feedback = self.stage.append('text')
 							    .attr('x', self.stage_w/2)
 							    .attr('y', self.stage_h/2)
@@ -636,7 +656,7 @@ var TestBlock = function(block) {
 			}
 		});
 
-		self.stim.update_tip('Press Spacebar to continue');
+		self.stim.update_tip((LANG=='en') ? 'Press Spacebar to continue' : 'Drücken Sie die Leertaste um fortzufahren');
 
 	}
 
@@ -653,7 +673,7 @@ var TestBlock = function(block) {
 var Feedback = function() {
 	$('#main').html('');
 	var self = this;
-	psiTurk.showPage('feedback.html');
+	psiTurk.showPage((LANG=='en') ? 'feedback.html' : 'feedback_de.html');
 	self.div = $('#container-instructions');
 	outpfx = ['feedback'];
 
@@ -661,14 +681,19 @@ var Feedback = function() {
 	total_correct = acc.reduce(function(a, b){return a+b;})
 	output(['total_correct', total_correct]);
 
-	var t = 'All done! You correctly classified '+total_correct+' out of '+(N_BLOCKS * N_TRIALS_TEST)+' shapes ' +
-		    'during the test turns, which means that you have earned a bonus of $'+(total_correct/100).toFixed(2)+'.';
+	var t = (LANG=='en') ?
+			'All done! You correctly classified '+total_correct+' out of '+(N_BLOCKS * N_TRIALS_TEST)+' shapes ' +
+		    'during the test turns, which means that you have earned a bonus of $'+(total_correct/100).toFixed(2)+'.' :
+			'Alles fertig! Sie haben '+total_correct+' von '+(N_BLOCKS * N_TRIALS_TEST)+' Formen ' +
+			'in den Test-Runden korrekt klassifiziert, also bekommen Sie einen Bonus von $'+(total_correct/100).toFixed(2)+'.';
 	self.div.append(instruction_text_element(t));
 
-	var t = 'You will be eligible to receive the bonus after you\'ve answered the following questions:'
+	var t = (LANG=='en') ?
+			'You will be eligible to receive the bonus after you\'ve answered the following questions:' :
+			'Den Bonus bekommen Sie ausgezahlt nachdem Sie folgende Fragen beantwortet haben';
 	self.div.append(instruction_text_element(t));
 
-	var error_message = '<h1>Oops!</h1><p>Something went wrong submitting your HIT. '+
+	var error_message = '<h1>Oops!</h1><p>Something went wrong submitting your results. '+
 					    'Press the button to resubmit.</p><button id=resubmit>Resubmit</button>';
 
 	record_responses = function() {

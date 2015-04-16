@@ -1,0 +1,86 @@
+<!-- basic layout for instructions -->
+<h1>Das Experiment ist abgeschlossen!</h1>
+<div id="container-instructions">
+</div>
+<div class="questionnaire">
+    <form id="postquiz" action="debrief" method="post">
+            <div class="question">
+                <p class="questiontext">
+                Auf einer Skala von 1 bis 10 (wo 10 ist am einnehmendsten), bitte stufen Sie ein, wie <b>EINNEHMEND</b> Sie die Aufgabe fanden:
+                </p>
+                    <select style = "text-align: center;" id="engagement" name="engagement">
+                        <option value="noresp" SELECTED></option>
+                        <option value="10">10 - Sehr einnehmend</option>
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5 - Mäßig</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                        <option value="0">0 - Nicht eingenommen</option>
+                    </select>
+            </div>
+            <div class="question">
+                <p class="questiontext">
+                Auf einer Skala von 1 bis 10 (wo 10 ist am schwierigsten), bitte stufen Sie ein, wie <b>SCHWIERIG</b> Sie die Aufgabe fanden:
+                </p>
+                    <select id="difficulty" name="difficulty">
+                        <option value="noresp" SELECTED></option>                        
+                        <option value="10">10 - Sehr schwierig</option>
+                        <option value="9">9</option>
+                        <option value="8">8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5 - Mittelschwer</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                        <option value="0">0 - Einfach</option>
+                    </select>
+            </div>
+            <div class="question">
+                <p class="questiontext">
+                    Haben Sie jegliche Art von Hilfsmittel benutzt, um die Aufgabe abzuschließen, 
+                    z.B. Papier und Stift, Bildschirmaufnahmen oder andere Aufnahmemittel? Gibt es 
+                    irgendeinen anderen Grund, warum Ihre Daten aus der Studie ausgeschlossen werden 
+                    sollten? (Bitte beachten Sie, dass Ihre Antwort auf diese Frage keinen Einfluss 
+                    auf Ihre Bezahlung hat)
+                </p>
+                <textarea id="externalaids" cols=80 rows=3 /></textarea>
+            </div>
+            
+            <div class="question">
+                <p class="questiontext">
+                    Haben Sie weitere Überlegungen oder Anregungen bezüglich der Aufgabe?
+                </p>
+                <textarea id="howtoimprove" cols=80 rows=3 /></textarea>
+            </div>
+            <div class="question">
+                <p class="questiontext">
+                Mit welchem Geschlecht identifizieren Sie sich?
+                </p>
+                <select id="gender" name="gender">
+                    <option value="noresp" SELECTED></option>
+                    <option value="female">Weiblich</option>
+                    <option value="male">Männlich</option>
+                    <option value="other">Anderes</option>
+                    <option value="noresponse">Ich möchte die Frage nicht beantworten</option>
+                </select>
+            </div>
+            <div class="question">
+                <p class="questiontext">
+                    <br>
+                Wie alt sind Sie in vollen Jahren? Tragen Sie '-1' ein, falls Sie die Frage nicht beantworten möchten.
+                </p>
+                <textarea id="age" name="age" type="number" min="-1" style="height:30px; width:80px" /></textarea>
+            </div>
+    </form>
+	<button id=btn-submit class="btn btn-default btn-lg">Einreichen</button>
+    
+</div>
+
+

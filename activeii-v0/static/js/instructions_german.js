@@ -18,7 +18,7 @@ function init_instruction(obj, id) {
 	obj.id = id;
 	output(['instructions', id]);
 
-	psiTurk.showPage('instruct.html');
+	psiTurk.showPage((LANG=='en') ? 'instruct.html' : 'instruct_de.html');
 	obj.div = $('#container-instructions');
 
 	obj.add_text = function(t) {
@@ -123,7 +123,7 @@ var Instructions3 = function() {
 var InstructionsQuiz = function() {
 	output(['instructions', 'preq']);
 	var self = this;
-	psiTurk.showPage('preq.html');
+	psiTurk.showPage((LANG=='en') ? 'preq.html' : 'preq_de.html');
 
     var checker = function() {
 		var errors = [];
