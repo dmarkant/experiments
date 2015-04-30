@@ -32,9 +32,9 @@ function init_instruction(obj, id) {
 var Instructions1 = function() {
 	var self = init_instruction(this, 1);
 
-    self.add_text('Willkommen! In diesem Experiment lernen Sie, Formen in ' +
-    				'zwei unterschiedliche Kategorien einzuordnen. ' +
-                  'Die Formen sehen so aus:');
+    self.add_text('Willkommen! In diesem Experiment lernen Sie, Formen ' +
+                  'in zwei unterschiedliche Kategorien einzuordnen. Die ' +
+                  'Formen sehen so aus:');
 
 	self.div.append(svg_element('stagesvg', 740, 300));
 	self.stage = d3.select('#stagesvg');
@@ -48,18 +48,19 @@ var Instructions1 = function() {
 
 
     if (STIM_COND == 'antenna') {
-        self.add_text('Wie Sie sehen, sind die Formen Drehscheiben, die sich zweierlei ' +
-						'unterscheiden können: 1) der Durchmesser des Kreises und ' +
-        				'2) der Winkel der Zentrallinie. Ausgehend von diesen Merkmalen, kann jede Form ' +
-        				'einer von zwei Kategorien zugeordnet werden (A oder B). ' +
-        				'Ihr Ziel ist es, herauszufinden, welche Formtypen zu welcher Kategorie gehören.');
+        self.add_text('Wie Sie sehen, sind die Formen Drehscheiben, die sich ' +
+                      'in zwei Weisen unterscheiden können: 1) der Durchmesser ' +
+                      'des Kreises und 2) der Winkel der Strecke. Ausgehend von ' +
+                      'diesen Merkmalen, kann jede Form, die Sie sehen, einer von ' +
+                      'zwei Kategorien zugeordnet werden (A oder B). Ihr Ziel ist ' +
+                      'es herauszufinden, welche Formtypen zu welcher Kategorie gehören.');
 
     } else if (STIM_COND == 'rectangle') {
-        self.add_text('Wie Sie sehen, sind die Formen Rechtecke, die sich zweierlei ' +
-        				'unterscheiden können: 1) Breite und ' +
-        				'2) Höhe. Ausgehend von diesen Merkmalen, kann jede Form ' +
-        				'einer von zwei Kategorien zugeordnet werden (A oder B). ' +
-        				'Ihr Ziel ist es, herauszufinden, welche Formtypen zu welcher Kategorie gehören.');
+        self.add_text('Wie Sie sehen, sind die Formen Rechtecke, die sich in zwei ' +
+                      'Weisen unterscheiden können: 1) Breite und 2) Höhe. Ausgehend ' +
+                      'von diesen Merkmalen, kann jede Form einer von zwei Kategorien ' +
+                      'zugeordnet werden (A oder B). Ihr Ziel ist es herauszufinden, ' +
+                      'welche Formtypen zu welcher Kategorie gehören.');
     }
 
 	add_next_instruction_button(Instructions2);
@@ -69,24 +70,29 @@ var Instructions1 = function() {
 var Instructions2 = function() {
 	var self = init_instruction(this, 2);
 
-    var dims = (STIM_COND == 'antenna') ? 'angle and radius' : 'width and height';
+    //var dims = (STIM_COND == 'antenna') ? 'angle and radius' : 'width and height';
+    var dims = (STIM_COND == 'antenna') ? 'angle and radius' : 'Breite and Höhe';
 
-    self.add_text('Die Zuordnung von Formen <span class=learning>lernen</span> Sie in mehreren Runden. ' +
-                  'In jeder Runde erscheint eine neue Form, zusammen mit einem grünen Kreis. ' +
-                  'Nachdem Sie auf den grünen Kreis geklickt haben, können Sie die Form beliebig anpassen ' +
-                  'und ihr die Gestalt verleihen, über die Sie <span class=learning>lernen</span> möchten. ');
+    self.add_text('Die Zuordnung von Formen <span class=learning>lernen</span> Sie ' +
+                  'in mehreren Runden. In jeder Runde erscheint eine neue Form, ' +
+                  'zusammen mit einem grünen Kreis. Nachdem Sie auf den grünen ' +
+                  'Kreis geklickt haben, können Sie die Form beliebig anpassen ' +
+                  'und ihr die Gestalt verleihen, über die Sie etwas lernen möchten.');
 
     if (SEL_COND == 'single') {
-        self.add_text('Sie können die Form jeweils entlang einer Dimension anpassen indem Sie die Maus von links nach rechts ' +
-                      'bewegen, und wechseln zwischen den Dimensionen ('+dims+') durch das Drücken der "X" Taste. ');
+        self.add_text('Sie können die Form jeweils entlang einer Größenordnung anpassen, ' +
+                      'indem Sie die Maus von links nach rechts bewegen, und Sie können ' +
+                      'zwischen den Größenordnungen durch das Drücken der "X" Taste wechseln.');
     } else if (SEL_COND == 'both') {
-        self.add_text('Sie können die Form entlang beiden Dimensionen anpassen indem Sie die Maus in unterschiedliche ' +
-        				'Richtungen bewegen.');
+        self.add_text('Sie werden nun in der Lage sein, die Form entlang beider Größenordnungen '+
+                      'anzupassen, indem Sie die Maus in unterschiedliche Richtungen bewegen.');
     }
 
-    self.add_text('Nachdem Sie die Form wie gewünscht ausgerichtet haben, drücken Sie die Leertaste um herauszufinden, ' +
-    				'zu welcher Kategorie sie gehört. Probieren Sie es am Beispiel unten ' +
-                  '(vorerst sehen Sie "??" statt der wahren Kategorie für die ausgewählte Form):');
+    self.add_text('Nachdem Sie das Gebilde zu der Form angepasst haben, über die ' +
+                  'Sie etwas lernen wollen, drücken Sie die Leertaste, um herauszufinden, ' +
+                  'zu welcher Kategorie sie gehört. Probieren Sie es am Beispiel unten ' +
+                  '(vorerst sehen Sie "??" statt der wahren Kategorie für die Form, die ' +
+                  'Sie ausgewählt haben):');
 
     self.div.append(svg_element('stagesvg', 740, 600));
 	self.stage = d3.select('#stagesvg');
@@ -107,13 +113,16 @@ var Instructions2 = function() {
 var Instructions3 = function() {
 	var self = init_instruction(this, 3);
 
-    self.add_text('An unterschiedlichen Stellen im Experiment werden Sie eine Reihe von <span class=test>test</span>-Runden durchführen. ' +
-    				'In jeder <span class=test>test</span>-Runde erscheint eine neue Form. Drücken Sie einfach A oder B auf der Tastatur ' +
-    				'für die Kategorie, zu der die Form Ihrer Meinung nach gehört. ');
+    self.add_text('Während des Experiments werden Sie an unterschiedlichen Stellen eine ' +
+                  'Reihe von <span class=test>Test</span>-Runden vollenden. In jeder <span class=test>Test</span>-Runde erscheint eine ' +
+                  'neue Form. Drücken Sie einfach A oder B auf der Tastatur für die ' +
+                  'Kategorie, zu der die Form Ihrer Meinung nach gehört.');
 
 
-    self.add_text('Ihr Bonus am Ende des Experiments basiert auf der Anzahl der korrekt zugeordneten Formen, es wird 0,01€ pro korrekte Zuordnung angerechnet. ' +
-                  'Daher sollten Sie versuchen, so schnell wie möglich die Kategorien zu erlernen, um Ihren Gewinn aus den <span class=test>test</span>-Runden zu maximieren.');
+    self.add_text('Ihr Bonus am Ende des Experiments basiert auf der Anzahl der korrekt ' +
+                  'zugeordneten Formen, es werden 0,02 € pro korrekte Zuordnung angerechnet. ' +
+                  'Daher sollten Sie versuchen, so schnell wie möglich die Kategorien zu ' +
+                  'erlernen, um Ihren Gewinn aus den <span class=test>Test</span>-Runden zu maximieren.');
 
     add_next_instruction_button(InstructionsQuiz);
 }
@@ -152,7 +161,7 @@ var InstructionsQuiz = function() {
 				$('#'+errors[i]).css("border","2px solid red");
 			};
 			$("#warning").css("color","red");
-			$("#warning").html("<p>Sieht so aus, als ob Sie einige Fragen falsch beantwortet haben (rot markiert). Bitte überprüfen Sie sie und drücken die \"Wiederholen\"-Taste unten um noch einmal die Instruktionen zu sehen.</p>");
+			$("#warning").html("<p>Es sieht so aus, als ob Sie einige Fragen falsch beantwortet haben (rot markiert). Bitte überprüfen Sie diese und drücken Sie dann die \"Wiederholen\"-Taste unten, um noch einmal die Anleitungen zu sehen.</p>");
 		};
 
 	};
@@ -171,16 +180,21 @@ var InstructionsQuiz = function() {
 var InstructionsComplete = function() {
 	var self = init_instruction(this, 'complete');
 
-    self.add_text('Gut gemacht! Sieht so aus, als ob Sie startklar wären. Sie werden jetzt ' +
-                  N_BLOCKS + ' Blöcke abschließen, wobei jeder Block mit einer Reihe von <span class=learning>lernen</span>-Runden beginnt, ' +
-                  'gefolgt von einer Reihe von <span class=test>test</span>-Runden. ' +
-                  'Nachdem Sie alle Runden abgeschlossen haben, sehen Sie den Bonus, den Sie in den <span class=test>test</span>-Runden verdient haben.');
+    self.add_text('Gut gemacht! Es sieht so aus, als ob Sie startklar wären. Sie ' +
+                  'werden jetzt '+N_BLOCKS+' Blöcke abschließen, wobei jeder Block ' +
+                  'mit einer Reihe von <span class=learning>Lern</span>-Runden beginnt, ' +
+                  'gefolgt von einer Reihe von <span class=test>Test</span>-Runden. ' +
+                  'Nachdem Sie alle Runden abgeschlossen haben, sehen Sie den Bonus, ' +
+                  'den Sie in den <span class=test>Test</span>-Runden verdient haben.');
 
-    self.add_text('Bitte bleiben Sie bis zum Schluss auf der Aufgabe fokussiert. Benutzen sie während des Experiments keine Hilfsmittel (z.B. Stift und Papier, Bildschirmaufnahmen etc.). ' +
-                  'Falls Sie zu lange inaktiv sind, endet das Experiment automatisch und es wird auf Auszahlung verzichtet. Sobald Sie angefangen haben, ' +
-                  'können Sie die Seite nicht mehr neu laden oder diese Instruktionen wieder ansehen. ');
+    self.add_text('Bitte konzentrieren Sie sich bis zum Schluss auf die Aufgabe, bis ' +
+                  'sie abgeschlossen ist. Benutzen sie während des Experiments keine ' +
+                  'Hilfsmittel (z.B. Stift und Papier, Bildschirmaufnahmen etc.). Falls ' +
+                  'Sie zu lange inaktiv sind, endet das Experiment automatisch und es ' +
+                  'wird auf Auszahlung verzichtet. Sobald Sie angefangen haben, können ' +
+                  'Sie die Seite nicht mehr neu laden oder diese Anleitung wieder ansehen.');
 
-    self.add_text('Klicken Sie unten um zu starten. Viel Glück! ');
+    self.add_text('Klicken Sie unten um zu starten. Viel Glück!');
 
     add_next_instruction_button(exp.training);
 

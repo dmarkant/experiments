@@ -191,3 +191,53 @@ span.test {
   font-size: 2em;
   margin-top: 30px;
 }
+
+
+#setup {
+  width: 340px;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+}
+
+
+#setup input {
+  text-align: center;
+  margin-bottom: 20px;
+  width: 300px;
+}
+
+#setup button {
+  margin-bottom: 20px;
+}
+
+#setup #partnerid {
+  margin-bottom: 20px;
+  width: 400px;
+  display: block;
+}
+
+.alert {
+  display: none;
+  margin-top: 20px;
+}
+
+#play-button {
+  visibility: hidden;
+}
+
+#summary { 
+  font-size: 2em;
+  padding: 30px;
+}
+
+#summary .left {
+  display: inline-block;
+  width: 150px;
+}
+
+#summary .right {
+  display: inline-block;
+  width: 150px;
+}
+

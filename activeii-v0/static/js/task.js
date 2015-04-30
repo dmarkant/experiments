@@ -10,7 +10,8 @@ var LANG = 'de'; // 'en' | 'de'
 
 var N_BLOCKS = 8,
 	N_TRIALS_TRAINING = 16,
-	N_TRIALS_TEST = 32;
+	N_TRIALS_TEST = 32,
+	BONUS_PER_CORRECT = .02;
 
 var exp,
 	active_item = undefined,
@@ -19,8 +20,11 @@ var exp,
 	outpfx = [],
 	acc = [],
 	acc_by_block = [],
+	total_correct,
+	total_bonus,
 	testset_file = 'static/testsets.csv',
-	testitems = [];
+	testitems = [],
+	ids = uniqueId.split(':');
 
 // Initalize psiturk object
 var psiTurk = new PsiTurk(uniqueId, adServerLoc, mode);
@@ -34,7 +38,8 @@ psiTurk.preloadPages(['instruct.html',
 					  'chooser.html',
 					  'stage.html',
 					  'feedback.html',
-					  'feedback_de.html']);
+					  'feedback_de.html',
+					  'summary.html']);
 
 
 DIMENSIONS = {'antenna': [{'name': 'radius',
@@ -679,18 +684,20 @@ var Feedback = function() {
 
 	// calculate final bonus
 	total_correct = acc.reduce(function(a, b){return a+b;})
+	total_bonus = (total_correct * BONUS_PER_CORRECT).toFixed(2) + '€';
 	output(['total_correct', total_correct]);
+	output(['total_bonus', total_bonus]);
 
 	var t = (LANG=='en') ?
 			'All done! You correctly classified '+total_correct+' out of '+(N_BLOCKS * N_TRIALS_TEST)+' shapes ' +
-		    'during the test turns, which means that you have earned a bonus of $'+(total_correct/100).toFixed(2)+'.' :
+		    'during the test turns, which means that you have earned a bonus of '+total_bonus+'.' :
 			'Alles fertig! Sie haben '+total_correct+' von '+(N_BLOCKS * N_TRIALS_TEST)+' Formen ' +
-			'in den Test-Runden korrekt klassifiziert, also bekommen Sie einen Bonus von $'+(total_correct/100).toFixed(2)+'.';
+			'in den Test-Runden korrekt klassifiziert, also bekommen Sie einen Bonus von '+total_bonus+'.';
 	self.div.append(instruction_text_element(t));
 
 	var t = (LANG=='en') ?
 			'You will be eligible to receive the bonus after you\'ve answered the following questions:' :
-			'Den Bonus bekommen Sie ausgezahlt nachdem Sie folgende Fragen beantwortet haben';
+			'Den Bonus bekommen Sie ausgezahlt nachdem Sie folgende Fragen beantwortet haben:';
 	self.div.append(instruction_text_element(t));
 
 	var error_message = '<h1>Oops!</h1><p>Something went wrong submitting your results. '+
@@ -707,13 +714,29 @@ var Feedback = function() {
 			psiTurk.recordUnstructuredData(this.id, this.value);
 		});
 
-		Exit();
+		if (ids[1] === 'lab') {
+			Summary();
+		} else {
+			Exit();
+		}
 	};
 
 	$("#btn-submit").click(function() {
 		record_responses();
 	});
 
+};
+
+
+var Summary = function() {
+	var self = this;
+	outpfx = [];
+	output('COMPLETE');
+	psiTurk.saveData();
+
+	psiTurk.showPage('summary.html');
+	$('#partid').html(ids[0]);
+	$('#bonus').html(total_bonus);
 };
 
 
@@ -728,6 +751,7 @@ var Experiment = function() {
 	var self = this;
 	self.block = -1;
 
+	output(['uniqueId', uniqueId]);
 	output(['condition', condition]);
 	output(['counterbalance', counterbalance]);
 	output(['rule_cond', RULE_COND]);

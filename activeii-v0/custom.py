@@ -29,12 +29,43 @@ custom_code = Blueprint('custom_code', __name__, template_folder='templates', st
 #  add them here
 ###########################################################
 
+@custom_code.route('/lab')
+def setup():
+    current_app.logger.info("Reached /lab")  # Print message to server.log for debugging
+
+    try:
+        return render_template('lab.html')
+    except TemplateNotFound:
+        abort(404)
+
+
+
+@custom_code.route('/check', methods=['GET'])
+def check_participant_id():
+    current_app.logger.info("Reached /check")  # Print message to server.log for debugging
+    uniqueId = request.args['uniqueId']
+
+    # lookup user in database
+    user = Participant.query.\
+           filter(Participant.workerid == uniqueId).\
+           all()
+
+    if len(user) == 0:
+        current_app.logger.info("No existing user with id %s" % uniqueId)  # Print message to server.log for debugging
+        valid_id = True
+    else:
+        current_app.logger.info("Already an existing user with id %s!" % uniqueId)  # Print message to server.log for debugging
+        valid_id = False
+
+    return jsonify({'valid_id': valid_id})
+
+
 #----------------------------------------------
 # example custom route
 #----------------------------------------------
 @custom_code.route('/my_custom_view')
 def my_custom_view():
-	current_app.logger.info("Reached /my_custom_view")  # Print message to server.log for debugging 
+	current_app.logger.info("Reached /my_custom_view")  # Print message to server.log for debugging
 	try:
 		return render_template('custom.html')
 	except TemplateNotFound:
@@ -97,4 +128,4 @@ def compute_bonus():
     except:
         abort(404)  # again, bad to display HTML, but...
 
-    
+
