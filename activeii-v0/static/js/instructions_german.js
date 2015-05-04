@@ -88,7 +88,7 @@ var Instructions2 = function() {
                       'anzupassen, indem Sie die Maus in unterschiedliche Richtungen bewegen.');
     }
 
-    self.add_text('Nachdem Sie das Gebilde zu der Form angepasst haben, über die ' +
+    self.add_text('Nachdem Sie die Form ausgewählt haben, über die ' +
                   'Sie etwas lernen wollen, drücken Sie die Leertaste, um herauszufinden, ' +
                   'zu welcher Kategorie sie gehört. Probieren Sie es am Beispiel unten ' +
                   '(vorerst sehen Sie "??" statt der wahren Kategorie für die Form, die ' +
@@ -120,7 +120,7 @@ var Instructions3 = function() {
 
 
     self.add_text('Ihr Bonus am Ende des Experiments basiert auf der Anzahl der korrekt ' +
-                  'zugeordneten Formen, es werden 0,02 € pro korrekte Zuordnung angerechnet. ' +
+                  'zugeordneten Formen, es werden 0,02 € pro korrekter Zuordnung angerechnet. ' +
                   'Daher sollten Sie versuchen, so schnell wie möglich die Kategorien zu ' +
                   'erlernen, um Ihren Gewinn aus den <span class=test>Test</span>-Runden zu maximieren.');
 

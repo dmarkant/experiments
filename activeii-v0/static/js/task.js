@@ -358,7 +358,7 @@ var Stimulus = function(args) {
 		$('#stagesvg').css({'cursor': 'none'});
 		self.update_tip((LANG=='en') ?
 						'Which category does this shape belong to? Press A or B to respond' :
-					    'Zu welcher Kategorie gehört diese Form? Drücken Sie A oder B zu antworten');
+					    'Zu welcher Kategorie gehört diese Form? Drücken Sie A oder B, um zu antworten');
 
 		self.labelA = self.stage.append('text')
 							    .attr('x', self.x - 60)
@@ -419,7 +419,7 @@ var Stimulus = function(args) {
 		self.draw_start_button();
 		self.update_tip((LANG=='en') ?
 						'Click the green dot to start' :
-						'Klicken Sie auf den grünen Punkt um zu beginnen');
+						'Klicken Sie auf den grünen Punkt, um zu beginnen');
 
 		// record starting mouse position
 		self.start_btn.on('click', function() {
