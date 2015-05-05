@@ -390,6 +390,8 @@ var Stimulus = function(args) {
 
 		$(window).bind('keydown', function(e) {
 			if (e.keyCode == '65' || e.keyCode == '66') {
+
+				$(window).unbind('keydown');
 				var resp = (e.keyCode == '65') ? 'A' : 'B';
 				output(['classify', 'response', resp]);
 				output(['classify', 'correct', resp==label]);
