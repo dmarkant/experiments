@@ -71,10 +71,9 @@ var Instructions2 = function() {
 
     var dims = (STIM_COND == 'antenna') ? 'angle and radius' : 'width and height';
 
-    self.add_text('You will learn how to classify shapes during a series of <span class=learning>learning</span> turns. ' +
-                  'On each <span class=learning>learning</span> turn a new shape will appear, along with a green circle. ' +
-                  'After you click on the green circle, you can then adjust the shape to take on whatever form you '+
-                  'want to learn about.');
+    self.add_text('You will learn how to classify shapes during a series of <span class=learning>learning</span> turns. On each learning turn, you will design a new shape that you want to learn about by choosing its features. You should design new shapes that you think will help you learn to predict which shapes belong in each category.');
+
+    self.add_text('At the start of each learning turn a randomly generated shape will appear along with a green circle. After you click the green circle, you can then adjust the shape to take whatever form you want to learn about.');
 
     if (SEL_COND == 'single') {
         self.add_text('You will be able to adjust the shape along one dimension at a time by moving the ' +

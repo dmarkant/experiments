@@ -358,7 +358,7 @@ var Stimulus = function(args) {
 		$('#stagesvg').css({'cursor': 'none'});
 		self.update_tip((LANG=='en') ?
 						'Which category does this shape belong to? Press A or B to respond' :
-					    'Zu welcher Kategorie gehört diese Form? Drücken Sie A oder B, um zu antworten');
+					    'Zu welcher Kategorie gehört diese Form? Drücken Sie A oder B, um zu antworten.');
 
 		self.labelA = self.stage.append('text')
 							    .attr('x', self.x - 60)
@@ -421,7 +421,7 @@ var Stimulus = function(args) {
 		self.draw_start_button();
 		self.update_tip((LANG=='en') ?
 						'Click the green dot to start' :
-						'Klicken Sie auf den grünen Punkt, um zu beginnen');
+						'Klicken Sie auf den grünen Punkt, um zu beginnen.');
 
 		// record starting mouse position
 		self.start_btn.on('click', function() {
@@ -441,11 +441,11 @@ var Stimulus = function(args) {
 
 		if (SEL_COND == 'single') {
 			self.update_dimension();
-			self.update_tip('Press X to change active dimension; press Spacebar to learn category');
+			self.update_tip('Press X to change active dimension; press Spacebar to learn the category');
 		} else {
 			self.update_tip((LANG=='en') ?
-							'Adjust the shape and press Spacebar to learn category' :
-						    'Anpassen Sie die Form und drücken die Leertaste um Kategorie zu lernen');
+							'Adjust the shape and press Spacebar to learn the category' :
+						    'Passen Sie die Form an und drücken Sie die Leertaste, um die Kategorie herauszufinden.');
 		};
 
 
@@ -542,7 +542,7 @@ var Stimulus = function(args) {
 			}
 		});
 
-		self.update_tip((LANG=='en') ? 'Press Spacebar to continue' : 'Drücken Sie die Leertaste um fortzufahren');
+		self.update_tip((LANG=='en') ? 'Press Spacebar to continue' : 'Drücken Sie die Leertaste, um fortzufahren.');
 
 	}
 
@@ -693,13 +693,13 @@ var Feedback = function() {
 	var t = (LANG=='en') ?
 			'All done! You correctly classified '+total_correct+' out of '+(N_BLOCKS * N_TRIALS_TEST)+' shapes ' +
 		    'during the test turns, which means that you have earned a bonus of '+total_bonus+'.' :
-			'Alles fertig! Sie haben '+total_correct+' von '+(N_BLOCKS * N_TRIALS_TEST)+' Formen ' +
-			'in den Test-Runden korrekt klassifiziert, also bekommen Sie einen Bonus von '+total_bonus+'.';
+			'Fertig! Sie haben während der Test-Runden '+total_correct+' von insgesamt '+(N_BLOCKS * N_TRIALS_TEST)+'-Formen ' +
+			'korrekt eingeordnet, also bekommen Sie einen Bonus von '+total_bonus+'.';
 	self.div.append(instruction_text_element(t));
 
 	var t = (LANG=='en') ?
 			'You will be eligible to receive the bonus after you\'ve answered the following questions:' :
-			'Den Bonus bekommen Sie ausgezahlt nachdem Sie folgende Fragen beantwortet haben:';
+			'Den Bonus bekommen Sie ausgezahlt, nachdem Sie folgende Fragen beantwortet haben:';
 	self.div.append(instruction_text_element(t));
 
 	var error_message = '<h1>Oops!</h1><p>Something went wrong submitting your results. '+
