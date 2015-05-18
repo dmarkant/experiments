@@ -624,7 +624,7 @@ var TestBlock = function(block) {
 									  'x': self.stage_w/2,
 									  'y': self.stage_h/2,
 								      'callback': self.trial,
-									  'coord': self.testitems[self.trial_ind]});
+									  'coords': self.testitems[self.trial_ind]});
 			self.stim.draw();
 			self.stim.listen_for_classify();
 		}
