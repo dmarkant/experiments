@@ -14,6 +14,10 @@ from psiturk.db import db_session, init_db
 from psiturk.models import Participant
 from json import dumps, loads
 
+import smtplib, datetime
+from email.mime.text import MIMEText
+from email.header    import Header
+
 # load the configuration options
 config = PsiturkConfig()
 config.load_config()
@@ -59,6 +63,49 @@ def check_participant_id():
 
     return jsonify({'valid_id': valid_id})
 
+
+@custom_code.route('/notify', methods=['GET'])
+def notify():
+    uniqueId = request.args['uniqueId']
+    print 'emailing result for uniqueId: %s' % uniqueId
+
+    # lookup user in database
+    user = Participant.query.\
+           filter(Participant.uniqueid == uniqueId).\
+           all()
+
+    if len(user) == 0:
+        current_app.logger.info("No existing user with id %s" % uniqueId)  # Print message to server.log for debugging
+    else:
+        user = user[0]
+
+        sender = str(config.get('email', 'username'))
+        password = str(config.get('email', 'password'))
+        recipient = 'dmarkant@gmail.com'
+        subject =  '[webexp] new participant data for active rule learning'
+        message_text = str(dumps(user.datastring))
+        date = datetime.date.today()
+
+        msg = "From: %s\nTo: %s\nSubject: %s\nDate: %s\n\n%s" % (sender, recipient, subject, date, message_text )
+
+        smtp_host = 'smtp.mail.yahoo.com'  # yahoo
+        recipients_emails = [recipient]
+
+        msg = MIMEText(message_text, 'plain', 'utf-8')
+        msg['Subject'] = Header(subject, 'utf-8')
+        msg['From'] = sender
+        msg['To'] = ", ".join(recipients_emails)
+
+        s = smtplib.SMTP(smtp_host, 587, timeout=10)
+        s.set_debuglevel(1)
+        try:
+            s.starttls()
+            s.login(sender, password)
+            s.sendmail(msg['From'], recipients_emails, msg.as_string())
+        finally:
+            s.quit()
+
+    return 'Success'
 
 #----------------------------------------------
 # example custom route

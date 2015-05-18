@@ -739,7 +739,21 @@ var Summary = function() {
 	psiTurk.showPage('summary.html');
 	$('#partid').html(ids[0]);
 	$('#bonus').html(total_bonus);
+
+	notify();
 };
+
+
+function notify() {
+	console.log('notifying');
+
+	$.ajax({url: '/notify?uniqueId=' + uniqueId,
+		    async: false,
+			success: function(data) {
+				console.log('notified');
+			}
+			})
+}
 
 
 var Exit = function() {
