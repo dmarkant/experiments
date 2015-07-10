@@ -1,0 +1,293 @@
+@import url(http://fonts.googleapis.com/css?family=Crimson+Text:400,600italic);
+@import url(http://fonts.googleapis.com/css?family=Bree+Serif);
+
+body {
+	background: white;
+	color: black;
+	text-align: center;
+	font-family: Verdana, Helvetica, sans-serif;
+	margin: 0 auto;
+    margin-top: 0px;
+	width: 1000px;
+}
+
+h1 {
+    font-family: "Crimson Text";
+    font-size: 32pt;
+}
+
+h2 {
+    font-family: "Crimson Text";
+    font-size: 24pt;
+    margin-top: 5px;
+}
+
+
+input {
+  text-align: center;
+        width: 200px;
+        height: 50px;
+        font-size: 14pt;
+        margin: 20px;
+}
+
+.warm {
+	color: #DDAA90;
+}
+
+.cool {
+	color: #ccccff;
+}
+
+strong {
+	font-weight: bold;
+	color: black;
+}
+
+/* these are all the same for now, but easy to modify individually */
+#container-ad, #container-error, #container-exp, #container-consent, #container-instructions, #container-questionnaire {
+    background: white;
+    margin: 30px;
+}
+
+/* ad.html  - the ad that people view first */
+#adlogo {
+    width: 140px;
+    padding: 2px;
+    border: 1px solid #ccc;
+    margin-right: 1em;
+}
+
+/* consent.html - the consent form */
+#consent {
+  margin: 0 auto;
+  margin-top: 0;
+  width: 800px;
+  font-size: 100%;
+}
+
+.legal {
+  text-align: justify;
+  font-size: 11pt;
+  line-height: 1.1em;
+}
+
+#trial {
+  margin: 0 auto;
+  width: 800px;
+  text-align: center;
+}
+
+#query {
+  color: darkgray;
+}
+
+.question {
+  margin-bottom: 30px;
+}
+
+/* errors */
+#error img {
+  padding-right: 10px;
+  padding-top: 15px;
+}
+
+#container-exp {
+  width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#chooser-buttons {
+  margin: 100px;
+}
+
+#chooser-buttons .btn {
+  width: 150px;
+  height: 150px;
+  font-size: 1.6em;
+}
+
+#test-done-btn {
+  font-size: 2.2em;
+  font-weight: bold;
+}
+
+#loading {
+  margin: 30px;
+}
+
+#stage svg {
+  border-top: 1px solid gray;
+  margin-top: 20px;
+}
+
+
+#belowStage #instruction {
+    margin: 0 auto;
+    width: 500px;
+}
+
+#container-instructions .instruction-body {
+    text-align: left;
+    font-family: "Georgia";
+    font-size: 16pt;
+    margin-top: 20px;
+    line-height: 1.3em;
+}
+
+.svg-container {
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+#feedback-table {
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 350px;
+    font-size: 14pt;
+}
+
+#feedback-table .row {
+    padding: 5px;
+}
+
+#feedback-table .left {
+    float: left;
+    width: 200px;
+    padding-right: 20px;
+    text-align: right;
+}
+
+#feedback-table .right {
+    padding-right: 20px;
+    text-align: right;
+}
+
+#questionnaire {
+  margin: 80px;
+  text-align: left;
+}
+
+.questionnaire {
+  margin: 80px;
+  text-align: left;
+}
+
+
+
+span.learning {
+  font-family: sans-serif;
+  font-weight: bold;
+  background-color: #58ACFA;
+  color: white;
+  padding: 4px;
+  text-transform: uppercase;
+}
+
+span.test {
+  font-family: sans-serif;
+  font-weight: bold;
+  background-color: #DF7401;
+  color: white;
+  padding: 4px;
+  text-transform: uppercase;
+}
+
+#aboveStage {
+  font-size: 2em;
+  margin-top: 30px;
+}
+
+
+#setup {
+  width: 340px;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+}
+
+
+#setup input {
+  text-align: center;
+  margin-bottom: 20px;
+  width: 300px;
+}
+
+#setup button {
+  margin-bottom: 20px;
+}
+
+#setup #partnerid {
+  margin-bottom: 20px;
+  width: 400px;
+  display: block;
+}
+
+.alert {
+  display: none;
+  margin-top: 20px;
+}
+
+#play-button {
+  visibility: hidden;
+}
+
+#summary { 
+  font-size: 2em;
+  padding: 30px;
+}
+
+#summary .left {
+  display: inline-block;
+  width: 150px;
+}
+
+#summary .right {
+  display: inline-block;
+  width: 150px;
+}
+
+
+.feature-entry {
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 0px;
+}
+
+.feature-entry * {
+  display: inline-block;
+}
+
+.feature-entry .units {
+  width: 50px;
+}
+
+.feature-entry .label {
+  font-size: 14px;
+  color: black;
+  width: 100px;
+  vertical-align: middle;
+}
+
+.feature-input {
+  margin-top: 0px;
+}
+
+button.test-entry {
+  width: 150px;
+  height: 100px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+#stage button {
+  display: none;
+}
+
+
+span.frange {
+  margin-top: 3px;
+  font-weight: normal;
+}

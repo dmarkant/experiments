@@ -1,0 +1,73 @@
+<h1>Instructions</h1>
+<div id="container-instructions">
+
+	<div id=warning class="instruction-body">
+    Please answer the questions below to make sure you have
+    understood the instructions so far:
+    </div>
+    
+
+    <div id="questionnaire">
+
+        <div class="question">
+            <p class="questiontext">
+            What is the goal of <span class=learning>LEARNING</span> turns?
+            </p>
+            <select id="learningphase" name="learningphase">
+                <option value="noresp" SELECTED></option>
+                <option value="0">To learn how different combinations lead to success or failure</option>
+                <option value="1">To learn how the amount of food varies across successful crops </option>
+                <option value="2">To earn a reward by making fast decisions</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            How many different substances will you be able to adjust?
+            </p>
+            <select id="ncategories" name="ncategories">
+                <option value="noresp" SELECTED></option>
+                <option value="0">1</option>
+                <option value="1">2</option>
+                <option value="2">3</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            During <span class=test>TEST</span> turns, you will be shown a combination of substances and must decide:
+            </p>
+            <select id="testgoal" name="testgoal">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Whether you tested the same combination of substances during learning</option>
+                <option value="1">Whether the substances have the same effects for a new class of crops you haven't seen before</option>
+                <option value="2">Whether the provided combination of the substances will lead to success or failure</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            During <span class=test>TEST</span> turns, a bonus will be awarded for:
+            </p>
+            <select id="bonus" name="bonus">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Responding before a deadline</option>
+                <option value="1">Each time you correctly predict a success or failure</option>
+                <option value="2">A single prediction that is selected at the end of the experiment</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div id="container-prompt">
+        <div id="prompt"></div>
+        <a href="#" id=btn-continue class="btn btn-default btn-lg">Submit answers</a>        
+        <a href="#" id=btn-startover class="btn btn-default btn-lg">See instructions again</a>
+    </div>
+</div>
+
+<div id="belowStage">
+    <div id="instruction"></div>
+    <div id="buttons"></div>
+</div>
+

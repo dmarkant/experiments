@@ -1,0 +1,72 @@
+<h1>Instructions</h1>
+<div id="container-instructions">
+
+	<div id=warning class="instruction-body">
+    Bitte beantworten Sie die folgenden Fragen um sicherzustellen, dass Sie die Instruktionen so weit verstanden haben:
+    </div>
+    
+
+    <div id="questionnaire">
+
+        <div class="question">
+            <p class="questiontext">
+            Was ist das Ziel von <span class=learning>LERNEN</span>-Runden?
+            </p>
+            <select id="learningphase" name="learningphase">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Zu lernen, wie man Formen aufgrund von ihren Merkmalen klassifiziert</option>
+                <option value="1">Zu lernen, welche Kategorie von Formen häufiger vorkommt als die andere</option>
+                <option value="2">Eine Belohnung zu bekommen, indem man Formen schnell auswählt</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            Wie viele Kategorien von Formen werden vorkommen?
+            </p>
+            <select id="ncategories" name="ncategories">
+                <option value="noresp" SELECTED></option>
+                <option value="0">1</option>
+                <option value="1">2</option>
+                <option value="2">3</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            Was sollen Sie während der <span class=test>Test</span>-Runden korrekt klassifizieren?
+            </p>
+            <select id="testgoal" name="testgoal">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Die gleichen Formen, die in der Lernphase ausgewählt wurden</option>
+                <option value="1">Formen aus komplett neuen Kategorien</option>
+                <option value="2">Neue Formen aus Kategorien A und B</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="questiontext">
+            Während der <span class=test>Test</span>-Runden wird ein Bonus gewährt für?
+            </p>
+            <select id="bonus" name="bonus">
+                <option value="noresp" SELECTED></option>
+                <option value="0">Das Beantworten vor einer Deadline</option>
+                <option value="1">Jede korrekt zugeordnete Form</option>
+                <option value="2">Das korrekte Zuordnung von einer einzelnen Form, die am Ende des Experiments ausgewählt wird</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div id="container-prompt">
+        <div id="prompt"></div>
+        <a href="#" id=btn-continue class="btn btn-default btn-lg">Antworten einreichen</a>        
+        <a href="#" id=btn-startover class="btn btn-default btn-lg">Die Instruktionen noch einmal ansehen</a>
+    </div>
+</div>
+
+<div id="belowStage">
+    <div id="instruction"></div>
+    <div id="buttons"></div>
+</div>
+

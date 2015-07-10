@@ -1,0 +1,35 @@
+Two cover stories: 1) toxic compounds, and 2) purchase offers.
+
+
+#1: Toxic Compound Game
+
+In this experiment you will play the role of a biologist. 
+Your job is to learn how two compounds (A and B) affect whether 
+a cell survives or dies.
+
+To learn about the effects of these two compounds, you will run a 
+series of tests in which you specify the levels of each that are 
+injected in the cell. You will then be told whether or not the 
+cell survived or died.
+
+At various points during the experiment, you will be shown a series 
+of new cells and the level of compounds in them. You will be asked
+to predict whether that cell will die or survive. For every prediction
+you get right, you will be paid a small bonus.
+
+
+#2: Alien Trading Game
+
+In this experiment you will play the role of a merchant who has 
+arrived in a new country where you don't speak the language. You 
+
+You have two resources to offer: resource A and resource B. To learn about
+what kinds of offers the merchant will accept or reject, you will make a 
+series of proposed offers in which you specify the amount of each resource
+that you are willing to trade. You will then be told whether the proposal 
+would be accepted or rejected.
+
+At various points during the experiment, you will be shown a series of 
+potential offers with the corresponding levels of each resource. You will be
+asked to predict whether that offer will be accepted or rejected by the merchant.
+For each decision that you correctly predict, you will be paid a small bonus.
