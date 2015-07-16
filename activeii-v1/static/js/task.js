@@ -1,6 +1,3 @@
-condition = 1;
-
-
 /* stimulus setup */
 DIMENSIONS = {'absolute': [{'name': 'chemical A',
 							'min': 0,
@@ -35,7 +32,7 @@ OFFSET = (Math.random() < .5) ? 1 : -1;
 
 
 /* settings */
-var LANG = 'en', // 'en' | 'de'
+var LANG = 'de', // 'en' | 'de'
 	testset_file = 'static/testsets.csv',
 	N_BLOCKS = 1,
 	N_TRIALS_TRAINING = 4,
@@ -326,7 +323,7 @@ var Stimulus = function(args) {
 		self.submit_btn.css('display', 'inline-block');
 		self.update_tip((LANG=='en') ?
 						'Adjust the amounts and click Test to see the result:' :
-					    '...');
+					    'Verändern Sie die Beträge und drücken "Test", um das Ergebnis zu sehen:');
 
 	};
 
@@ -379,7 +376,7 @@ var Stimulus = function(args) {
 
 		self.update_tip((LANG=='en') ?
 						'What do you predict will be the outcome if this combination is used?' :
-					    'Zu welcher Kategorie gehört diese Form? Drücken Sie A oder B, um zu antworten.');
+					    'Welches Ergebnis sagen Sie voraus, wenn diese Zusammensetzung genutzt wird?');
 
 		self.predict_success_btn.css('display', 'inline-block');
 		self.predict_failure_btn.css('display', 'inline-block');
@@ -531,8 +528,8 @@ self.testitems = testitems[block];
 		if (LANG=='en') {
 			var t = 'On this round you correctly predicted the outcome '+block_ncorrect+' out of '+N_TRIALS_TEST + ' times.';
 		} else {
-			var t = 'In diesem Block haben Sie '+ block_ncorrect+
-					' von '+N_TRIALS_TEST+' Objekte korrekt klassifiziert.';
+			var t = 'In dieser Runde haben Sie die Ergebnisse für '+ block_ncorrect+
+					' von '+N_TRIALS_TEST+' Durchgängen richtig vorhergesagt.';
 		}
 		self.feedback = self.stage.append('text')
 							    .attr('x', self.stage_w/2)
@@ -582,13 +579,14 @@ var Feedback = function() {
 	var t = (LANG=='en') ?
 			'All done! You correctly predicted the outcome for '+total_correct+' out of '+(N_BLOCKS * N_TRIALS_TEST) +
 		    ' combinations during the test turns, which means that you have earned a bonus of '+total_bonus+'.' :
-			'Fertig! Sie haben während der Test-Runden '+total_correct+' von insgesamt '+(N_BLOCKS * N_TRIALS_TEST)+'-Formen ' +
-			'korrekt eingeordnet, also bekommen Sie einen Bonus von '+total_bonus+'.';
+			'Fertig! Sie haben die Ergebnisse für '+total_correct+' von '+(N_BLOCKS * N_TRIALS_TEST)+
+			' Zusammensetzungen während der Testdurchgänge richtig vorhergesagt. Das bedeutet, '+
+			'Sie haben einen Bonus von  '+total_bonus+' EUR verdient.';
 	self.div.append(instruction_text_element(t));
 
 	var t = (LANG=='en') ?
 			'You will be eligible to receive the bonus after you\'ve answered the following questions:' :
-			'Den Bonus bekommen Sie ausgezahlt, nachdem Sie folgende Fragen beantwortet haben:';
+			'Sie bekommen den Bonus ausgezahlt, nachdem Sie folgende Fragen beantwortet haben:';
 	self.div.append(instruction_text_element(t));
 
 	var error_message = '<h1>Oops!</h1><p>Something went wrong submitting your results. '+
