@@ -34,9 +34,9 @@ OFFSET = (Math.random() < .5) ? 1 : -1;
 /* settings */
 var LANG = 'de', // 'en' | 'de'
 	testset_file = 'static/testsets.csv',
-	N_BLOCKS = 1,
-	N_TRIALS_TRAINING = 4,
-	N_TRIALS_TEST = 4,
+	N_BLOCKS = 8,
+	N_TRIALS_TRAINING = 16,
+	N_TRIALS_TEST = 32,
 	BONUS_PER_CORRECT = .02,
 	exp,
 	active_item = undefined,
@@ -525,20 +525,35 @@ self.testitems = testitems[block];
 		$('.feature-entry').css('display', 'none');
 		self.stim.remove();
 
-		if (LANG=='en') {
-			var t = 'On this round you correctly predicted the outcome '+block_ncorrect+' out of '+N_TRIALS_TEST + ' times.';
-		} else {
-			var t = 'In dieser Runde haben Sie die Ergebnisse für '+ block_ncorrect+
-					' von '+N_TRIALS_TEST+' Durchgängen richtig vorhergesagt.';
-		}
-		self.feedback = self.stage.append('text')
+		t1 = (LANG=='en') ? 'On this round you correctly predicted the outcome' : 'In dieser Runde haben Sie die Ergebnisse für';
+		t2 = (LANG=='en') ? block_ncorrect+' out of '+N_TRIALS_TEST : block_ncorrect+' von '+N_TRIALS_TEST;
+		t3 = (LANG=='en') ? 'times' : 'Durchgängen richtig vorhergesagt.';
+
+
+		t1 = self.stage.append('text')
 							    .attr('x', self.stage_w/2)
-							    .attr('y', self.stage_h/2)
+							    .attr('y', self.stage_h/2-20)
 							    .attr('font-size', '20px')
 							    .attr('font-family', 'Georgia')
 							    .attr('text-anchor', 'middle')
 								.attr('fill', 'black')
-							    .text(t);
+							    .text(t1);
+		t2 = self.stage.append('text')
+							    .attr('x', self.stage_w/2)
+							    .attr('y', self.stage_h/2 + 20)
+							    .attr('font-size', '30px')
+							    .attr('font-family', 'Georgia')
+							    .attr('text-anchor', 'middle')
+								.attr('fill', 'black')
+							    .text(t2)
+		t3 = self.stage.append('text')
+							    .attr('x', self.stage_w/2)
+							    .attr('y', self.stage_h/2 + 60)
+							    .attr('font-size', '20px')
+							    .attr('font-family', 'Georgia')
+							    .attr('text-anchor', 'middle')
+								.attr('fill', 'black')
+							    .text(t3);
 
 
 		$(window).bind('keydown', function(e) {
