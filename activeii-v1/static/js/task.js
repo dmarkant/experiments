@@ -30,10 +30,18 @@ FINDEX = (Math.random() < .5) ? [0, 1] : [1, 0];
 // randomize offset of rule from center
 OFFSET = (Math.random() < .5) ? 1 : -1;
 
+RULE_COND = 'rb';
+RULE_COUNTER = 2;
+OFFSET = 1;
+
+
+// test set depends on condition and offset
+var r = RULE_COND == 'rb' ? '1D' : '2D';
+var l = OFFSET < 0 ? 'A' : 'B';
+testset_file = 'static/testsets_'+r+'_'+RULE_COUNTER+'_'+l+'.csv';
 
 /* settings */
 var LANG = 'de', // 'en' | 'de'
-	testset_file = 'static/testsets.csv',
 	N_BLOCKS = 8,
 	N_TRIALS_TRAINING = 16,
 	N_TRIALS_TEST = 32,
