@@ -1,7 +1,7 @@
 /* stimulus setup */
 DIMENSIONS = {'absolute': [{'name': 'chemical A',
 							'min': 0,
-						    'max': 30,
+						    'max': 10,
 						    'units': 'liters'},
 						   {'name': 'fertilizer B',
 						    'min': 0,
