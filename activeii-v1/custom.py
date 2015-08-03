@@ -43,7 +43,6 @@ def setup():
         abort(404)
 
 
-
 @custom_code.route('/check', methods=['GET'])
 def check_participant_id():
     current_app.logger.info("Reached /check")  # Print message to server.log for debugging

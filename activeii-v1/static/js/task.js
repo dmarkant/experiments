@@ -647,6 +647,14 @@ var Summary = function() {
 	$('#bonus').html(total_bonus);
 
 	notify();
+
+	// mark completion
+	$.ajax({url: '/worker_complete?uniqueId=' + uniqueId,
+		    async: false,
+			success: function(data) {
+				console.log('worker_complete:', data);
+			}
+			})
 };
 
 
