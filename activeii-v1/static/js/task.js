@@ -296,24 +296,26 @@ var Stimulus = function(args) {
 
 		self.submit_btn.on('click', function(e) {
 
+			// get feature values
+			output(['selection', 'input', self.feature_inputs[0].val(), self.feature_inputs[1].val()]);
 
 			// validate the input
-			var valid = true;
+			var valid = [false, false];
 			_.each(self.feature_inputs, function(entry, i) {
+
 				var value = Number(entry.val());
 				var dim = DIMENSIONS[STIM_COND][i];
-				if (value < dim['min'] || value > dim['max']) {
-					valid = false;
+				if ($.isNumeric(entry.val()) && (value >= dim['min'] && value <= dim['max'])) {
+					valid[i] = true;
 				}
 			});
 
-			// get feature values
-			self.fvalue = [Number(self.feature_inputs[0].val()), Number(self.feature_inputs[1].val())];
-			output(['selection', 'fvalue', self.fvalue[0], self.fvalue[1], valid]);
 
 			// if valid, then make input uneditable and
 			// generate feedback
-			if (valid) {
+			if (valid[0] && valid[1]) {
+				self.fvalue = [Number(self.feature_inputs[0].val()), Number(self.feature_inputs[1].val())];
+				output(['selection', 'fvalue', self.fvalue[0], self.fvalue[1]]);
 				_.each(self.feature_inputs,
 					   function(i, x) {i.attr('readOnly', true);}
 				);
@@ -321,7 +323,8 @@ var Stimulus = function(args) {
 			} else {
 				// provide feedback that supplied values
 				// were outside range
-				self.update_tip('One of the amounts is outside the possible range, please try again:', 'red');
+				output(['selection', 'invalid_selection']);
+				self.update_tip('One of the amounts is outside the possible range or is not a number, please try again:', 'red');
 			};
 		});
 		self.submit_btn.css('display', 'inline-block');
@@ -721,7 +724,8 @@ var Experiment = function() {
 	// load and randomize test items
 	testitems = load_test_sets();
 
-	self.instructions();
+	//self.instructions();
+	self.training();
 };
 
 
