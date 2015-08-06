@@ -724,8 +724,7 @@ var Experiment = function() {
 	// load and randomize test items
 	testitems = load_test_sets();
 
-	//self.instructions();
-	self.training();
+	self.instructions();
 };
 
 
