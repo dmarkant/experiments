@@ -30,6 +30,13 @@ FINDEX = (Math.random() < .5) ? [0, 1] : [1, 0];
 // randomize offset of rule from center
 OFFSET = (Math.random() < .5) ? 1 : -1;
 
+// randomize which dimension has the larger range
+if (STIM_COND=='absolute') {
+	if (Math.random() < .5) {
+		DIMENSIONS['absolute'][0]['max'] = 50;
+		DIMENSIONS['absolute'][1]['max'] = 10;
+	}
+}
 
 // test set depends on condition and offset
 var r = RULE_COND == 'rb' ? '1D' : '2D';
