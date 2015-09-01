@@ -731,6 +731,10 @@ var Experiment = function() {
 	// load and randomize test items
 	testitems = load_test_sets();
 
+	if (testitems==undefined) {
+		Exit();
+	}
+
 	self.instructions();
 };
 
