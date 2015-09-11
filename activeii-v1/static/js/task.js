@@ -1,4 +1,4 @@
-condition = 2
+condition = 0
 
 /* stimulus setup */
 DIMENSIONS = {'absolute': [{'name': 'chemical A',
