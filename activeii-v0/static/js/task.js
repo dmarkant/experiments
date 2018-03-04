@@ -1,3 +1,5 @@
+condition = 0
+
 RULE_COND = ['rb', 'ii'][Math.floor(condition/2)];
 STIM_COND = ['antenna', 'rectangle'][condition % 2];
 //STIM_COND = ['antenna', 'rectangle'][Math.floor(condition/2) % 2];
